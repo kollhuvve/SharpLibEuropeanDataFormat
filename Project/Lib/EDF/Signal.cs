@@ -18,6 +18,19 @@ namespace SharpLib.EuropeanDataFormat
 
         public List<short> Samples { get; set; } = new List<short> { };
 
+        /// <summary>
+        /// Provided sample value after scaling.
+        /// </summary>
+        /// <param name="aIndex"></param>
+        /// <returns></returns>
+        public double ScaledSample(int aIndex) { return Samples[aIndex] * ScaleFactor(); }
+
+        /// <summary>
+        /// Provide sample scaling factor.
+        /// </summary>
+        /// <returns></returns>
+        public double ScaleFactor() { return (PhysicalMaximum.Value - PhysicalMinimum.Value)/(DigitalMaximum.Value - DigitalMinimum.Value); }
+
         public override string ToString()
         {
             return Label.Value + " " + SampleCountPerRecord.Value.ToString() + "/" + Samples.Count().ToString() + " [" 

@@ -187,7 +187,7 @@ namespace SharpLib.EuropeanDataFormat
         public VariableLengthInt DigitalMinimum { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMinimum);
         public VariableLengthInt DigitalMaximum { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMaximum);
         public VariableLengthString Prefiltering { get; private set; } = new VariableLengthString(HeaderItems.Prefiltering);
-        public VariableLengthInt NumberOfSamplesInDataRecord { get; private set; } = new VariableLengthInt(HeaderItems.NumberOfSamplesInDataRecord);
+        public VariableLengthInt SampleCountPerRecord { get; private set; } = new VariableLengthInt(HeaderItems.NumberOfSamplesInDataRecord);
         public VariableLengthString SignalsReserved { get; private set; } = new VariableLengthString(HeaderItems.SignalsReserved);
 
         public Header() { }
@@ -219,7 +219,7 @@ namespace SharpLib.EuropeanDataFormat
                 strOutput += "\tDigital minimum [" + DigitalMinimum.Value[i] + "]\n";
                 strOutput += "\tDigital maximum [" + DigitalMaximum.Value[i] + "]\n";
                 strOutput += "\tPrefiltering [" + Prefiltering.Value[i] + "]\n";
-                strOutput += "\tNumber of samples in data record [" + NumberOfSamplesInDataRecord.Value[i] + "]\n";
+                strOutput += "\tNumber of samples in data record [" + SampleCountPerRecord.Value[i] + "]\n";
                 strOutput += "\tSignals reserved [" + SignalsReserved.Value[i] + "]\n";
             }
 

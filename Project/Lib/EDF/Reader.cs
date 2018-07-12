@@ -39,7 +39,7 @@ namespace SharpLib.EuropeanDataFormat
             h.DigitalMinimum.Value              = ReadMultipleInt(HeaderItems.DigitalMinimum, ns);
             h.DigitalMaximum.Value              = ReadMultipleInt(HeaderItems.DigitalMaximum, ns);
             h.Prefiltering.Value                = ReadMultipleAscii(HeaderItems.Prefiltering, ns);
-            h.NumberOfSamplesInDataRecord.Value = ReadMultipleInt(HeaderItems.NumberOfSamplesInDataRecord, ns);
+            h.SampleCountPerRecord.Value = ReadMultipleInt(HeaderItems.NumberOfSamplesInDataRecord, ns);
             h.SignalsReserved.Value             = ReadMultipleAscii(HeaderItems.SignalsReserved, ns);
 
             return h;
@@ -53,8 +53,17 @@ namespace SharpLib.EuropeanDataFormat
             for (int i = 0; i < signals.Length; i++)
             {
                 signals[i] = new Signal();
+                // Just copy data from the header, ugly architecture really...
                 signals[i].Label.Value = header.Labels.Value[i];
-                signals[i].SampleCountPerRecord.Value = header.NumberOfSamplesInDataRecord.Value[i];
+                signals[i].TransducerType.Value = header.TransducerType.Value[i];
+                signals[i].PhysicalDimension.Value = header.PhysicalDimension.Value[i];
+                signals[i].PhysicalMinimum.Value = header.PhysicalMinimum.Value[i];
+                signals[i].PhysicalMaximum.Value = header.PhysicalMaximum.Value[i];
+                signals[i].DigitalMinimum.Value = header.DigitalMinimum.Value[i];
+                signals[i].DigitalMaximum.Value = header.DigitalMaximum.Value[i];
+                signals[i].Prefiltering.Value = header.Prefiltering.Value[i];
+                signals[i].Reserved.Value = header.SignalsReserved.Value[i];
+                signals[i].SampleCountPerRecord.Value = header.SampleCountPerRecord.Value[i];
             }
 
             //Read the signal sample values

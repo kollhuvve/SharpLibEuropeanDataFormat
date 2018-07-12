@@ -41,9 +41,13 @@ namespace EuropeanDataFormatDemo
 
                 Console.WriteLine("=========================================");
 
+
+                //Console.WriteLine("Scaled sample test: " + edf.Signals[31].ScaledSample(0));
+
                 //TODO: Test saving files, I guess we would need to fix recording writing function
             }
 
+            
 
 
             Console.ReadLine();
