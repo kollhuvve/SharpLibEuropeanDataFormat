@@ -1,14 +1,22 @@
+![Build Status](https://slions.visualstudio.com/_apis/public/build/definitions/ad16bbd0-a884-4787-8e3a-85daf30cca16/10/badge)
+
 ![EDF file icon](Doc/edflib_icon.png?raw=true "EDF file icon")
 
 ## Summary
 
-LibEDF is a library to read and write EDF signal files as defined in the [EDF specification](http://www.edfplus.info/specs/edf.html).
+SharpLibEuropeanDataFormat allows you to read EDF files typically used in medical applications.
+See [EDF specification](http://www.edfplus.info/specs/edf.html).
+Support for writing was left in place but is untested and most certainly broken.
+
+It was cloned from LibEDF but as since been fixed and refactored.
+LibEDF for some reason was only reading a single record which was rather useless for most applications.
+Most of the documentation below is outdated and contains information about the upstrean repository.
 
 This project is provided under the terms of the [MIT license](http://choosealicense.com/licenses/mit/).
 
 ## C# Usage
 
-The project LibEDF_CSharp builds to create a COM visible DLL.  
+The project LibEDF_CSharp builds to create a COM visible DLL.
 To use the library in a C# project reference the LibEDF_CSharp project or DLL and use the namespace LibEDF_CSharp as shown in the example code below.
 
 ```cs
@@ -46,7 +54,7 @@ h.StartTime.Value               = "12.12.12"; //hh.mm.ss
 h.Reserved.Value                = "RESERVED";
 h.NumberOfDataRecords.Value     = 1;
 h.NumberOfSignals.Value         = (short)edfFile.Signals.Length;
-h.SignalsReserved.Value         = Enumerable.Repeat("RESERVED".PadRight(32, ' '), 
+h.SignalsReserved.Value         = Enumerable.Repeat("RESERVED".PadRight(32, ' '),
                                     h.NumberOfSignals.Value).ToArray();
 
 //Set the header
@@ -72,10 +80,10 @@ var f = new EDFFile(fileName);
 ![Console example screenshot](Doc/edf_example_console.png?raw=true)
 
 ## Win32 usage
-The project LibEDF_Win32Dll builds to create an unmanaged .dll and associated .lib file.  
+The project LibEDF_Win32Dll builds to create an unmanaged .dll and associated .lib file.
 Include those files and the header file libedf.h to call functions from an unmanaged Win32 project."
 
-### Header Record 
+### Header Record
 
 | # Chars | File description                               |
 |---------|------------------------------------------------|
@@ -89,7 +97,7 @@ Include those files and the header file libedf.h to call functions from an unman
 |8 ascii  | number of data records|
 |8 ascii  | duration of a data record, in seconds |
 |4 ascii  | number of signals (ns) in data record |
-|ns * 16 ascii | ns * label (e.g. EEG Fpz-Cz or Body temp)| 
+|ns * 16 ascii | ns * label (e.g. EEG Fpz-Cz or Body temp)|
 |ns * 80 ascii | ns * transducer type (e.g. AgAgCl electrode) |
 |ns * 8 ascii  | ns * physical dimension (e.g. uV or degreeC) |
 |ns * 8 ascii  | ns * physical minimum (e.g. -500 or 34) |
@@ -100,7 +108,7 @@ Include those files and the header file libedf.h to call functions from an unman
 |ns * 8 ascii  | ns * nr of samples in each data record |
 |ns * 32 ascii | ns * reserved|
 
-### Data Record 
+### Data Record
 
 | # Chars                   | File description                |
 |---------------------------|---------------------------------|
@@ -108,4 +116,4 @@ Include those files and the header file libedf.h to call functions from an unman
 |nr of samples[2] * integer | second signal                   |
 |.. | |
 |.. | |
-|nr of samples[ns] * integer | last signal | 
+|nr of samples[ns] * integer | last signal |
