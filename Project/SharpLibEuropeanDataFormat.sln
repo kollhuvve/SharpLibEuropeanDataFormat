@@ -7,11 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Dll", "LibEDF_W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Example", "LibEDF_Win32Example\LibEDF_Win32Example.vcxproj", "{F8085787-2F85-4BF2-A617-6D7D99DD8415}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNet", "LibEDF_DotNet\LibEDF_DotNet.csproj", "{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNet", "Lib\LibEDF_DotNet.csproj", "{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNetExamples", "LibEDF_DotNetExamples\LibEDF_DotNetExamples.csproj", "{73ACE459-8CE0-4D90-95EE-A9B3543E183F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNetExamples", "Demo\LibEDF_DotNetExamples.csproj", "{73ACE459-8CE0-4D90-95EE-A9B3543E183F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNetTests", "LibEDF_DotNetTests\LibEDF_DotNetTests.csproj", "{077F4371-C947-4193-AB00-7EE21365C79C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNetTests", "Tests\LibEDF_DotNetTests.csproj", "{077F4371-C947-4193-AB00-7EE21365C79C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

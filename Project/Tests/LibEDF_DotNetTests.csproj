@@ -73,7 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibEDF_DotNet\LibEDF_DotNet.csproj">
+    <ProjectReference Include="..\Lib\LibEDF_DotNet.csproj">
       <Project>{7e8b16eb-eb43-4a0f-b4aa-d00bfe41ebe2}</Project>
       <Name>LibEDF_DotNet</Name>
     </ProjectReference>

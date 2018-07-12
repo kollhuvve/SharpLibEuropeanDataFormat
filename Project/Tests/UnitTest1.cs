@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LibEDF_DotNet;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace EDFSharpTests
 {
@@ -24,7 +25,7 @@ namespace EDFSharpTests
             ecgSig.TransducerType.Value = "UNKNOWN";
             ecgSig.Prefiltering.Value = "UNKNOWN";
             ecgSig.Reserved.Value = "RESERVED";
-            ecgSig.Samples = new short[] { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
+            ecgSig.Samples = new List<short> { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
 
             var soundSig = new EDFSignal();
             soundSig.Label.Value = "SOUND";
@@ -36,7 +37,7 @@ namespace EDFSharpTests
             soundSig.PhysicalMaximum.Value = 44.0;
             soundSig.TransducerType.Value = "UNKNOWN";
             soundSig.Prefiltering.Value = "UNKNOWN";
-            soundSig.Samples = new short[] { 11, 200, 300, 123, 87, 204, 145, 234, 222, 75 };
+            soundSig.Samples = new List<short> { 11, 200, 300, 123, 87, 204, 145, 234, 222, 75 };
             soundSig.Reserved.Value = "RESERVED";
                         
             edf1.Signals = new EDFSignal[2] { ecgSig, soundSig };
@@ -71,7 +72,7 @@ namespace EDFSharpTests
             Assert.AreEqual(edf2.Header.NumberOfDataRecords.ToAscii(),  edf1.Header.NumberOfDataRecords.ToAscii());
             Assert.AreEqual(edf2.Header.NumberOfSignals.ToAscii(),      edf1.Header.NumberOfSignals.ToAscii());
             Assert.AreEqual(edf2.Header.SignalsReserved.ToAscii(),      edf1.Header.SignalsReserved.ToAscii());
-            Assert.AreEqual(edf2.Signals[0].Samples.Length,             edf1.Signals[0].Samples.Length);
+            Assert.AreEqual(edf2.Signals[0].Samples.Count,             edf1.Signals[0].Samples.Count);
         }
     }
 }
