@@ -8,9 +8,9 @@ SharpLibEuropeanDataFormat allows you to read EDF files typically used in medica
 See [EDF specification](http://www.edfplus.info/specs/edf.html).
 Support for writing was left in place but is untested and most certainly broken.
 
-It was cloned from LibEDF but as since been fixed and refactored.
+It was forked from LibEDF but has since been fixed and refactored.
 LibEDF for some reason was only reading a single record which was rather useless for most applications.
-Most of the documentation below is outdated and contains information about the upstrean repository.
+The documentation below is outdated and contains information about the upstrean fork.
 
 This project is provided under the terms of the [MIT license](http://choosealicense.com/licenses/mit/).
 
