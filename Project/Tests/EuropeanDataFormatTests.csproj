@@ -6,8 +6,8 @@
     <ProjectGuid>{077F4371-C947-4193-AB00-7EE21365C79C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EDFSharpTests</RootNamespace>
-    <AssemblyName>EDFSharpTests</AssemblyName>
+    <RootNamespace>SharpLib.EuropeanDataFormat</RootNamespace>
+    <AssemblyName>EuropeanDataFormatTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

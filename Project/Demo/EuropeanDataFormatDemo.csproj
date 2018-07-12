@@ -7,8 +7,8 @@
     <ProjectGuid>{73ACE459-8CE0-4D90-95EE-A9B3543E183F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LibEDF_DotNetExamples</RootNamespace>
-    <AssemblyName>LibEDF_DotNetExamples</AssemblyName>
+    <RootNamespace>SharpLib.EuropeanDataFormat</RootNamespace>
+    <AssemblyName>EuropeanDataFormatDemo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

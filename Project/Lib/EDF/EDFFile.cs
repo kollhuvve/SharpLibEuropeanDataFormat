@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 
-namespace LibEDF_DotNet
+namespace SharpLib.EuropeanDataFormat
 {
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
        Guid("29757a02-8a0c-47e2-96bb-2266c993c97a")]
@@ -15,17 +15,17 @@ namespace LibEDF_DotNet
 
     [ClassInterface(ClassInterfaceType.None),
         Guid("07504667-1e49-4535-9c2f-157ee5b280b0")]
-    public class EDFFile : IEDFFile
+    public class File : IEDFFile
     {
-        public EDFHeader Header { get; set; } = new EDFHeader();
-        public EDFSignal[] Signals { get; set; }
+        public Header Header { get; set; } = new Header();
+        public Signal[] Signals { get; set; }
 
-        public EDFFile() { }
-        public EDFFile(string edfFilePath) {
+        public File() { }
+        public File(string edfFilePath) {
             Open(edfFilePath);
         }
 
-        public EDFFile(byte[] edfBytes){
+        public File(byte[] edfBytes){
             Open(edfBytes);
         }
 
@@ -37,7 +37,7 @@ namespace LibEDF_DotNet
 
         public void Open(string edfFilePath)
         {
-            using (var reader = new EDFReader(File.Open(edfFilePath, FileMode.Open)))
+            using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open)))
             {
                 Header = reader.ReadHeader();
                 Signals = reader.ReadSignals();
@@ -46,7 +46,7 @@ namespace LibEDF_DotNet
 
         public void Open(byte[] edfBytes)
         {
-            using (var r = new EDFReader(edfBytes))
+            using (var r = new Reader(edfBytes))
             {
                 Header = r.ReadHeader();
                 Signals = r.ReadSignals();
@@ -57,7 +57,7 @@ namespace LibEDF_DotNet
         {
             if (Header == null) return;
 
-            using (var writer = new EDFWriter(File.Open(edfFilePath, FileMode.Create)))
+            using (var writer = new Writer(System.IO.File.Open(edfFilePath, FileMode.Create)))
             {
                 writer.WriteEDF(this, edfFilePath);
             }

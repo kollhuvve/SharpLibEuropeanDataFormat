@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LibEDF_DotNet;
+using SharpLib.EuropeanDataFormat;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -12,9 +12,9 @@ namespace EDFSharpTests
         public void Test_WriteReadEDF_ShouldReturnSameData()
         {
             //Write an EDF file with two signals then read it and check the data is correct
-            var edf1 = new EDFFile();
+            var edf1 = new File();
 
-            var ecgSig = new EDFSignal();
+            var ecgSig = new Signal();
             ecgSig.Label.Value = "ECG";
             ecgSig.SampleCountPerRecord.Value = 10; //Small number of samples for testing
             ecgSig.PhysicalDimension.Value = "mV";
@@ -27,7 +27,7 @@ namespace EDFSharpTests
             ecgSig.Reserved.Value = "RESERVED";
             ecgSig.Samples = new List<short> { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
 
-            var soundSig = new EDFSignal();
+            var soundSig = new Signal();
             soundSig.Label.Value = "SOUND";
             soundSig.SampleCountPerRecord.Value = 10;//Small number of samples for testing
             soundSig.PhysicalDimension.Value = "mV";
@@ -40,9 +40,9 @@ namespace EDFSharpTests
             soundSig.Samples = new List<short> { 11, 200, 300, 123, 87, 204, 145, 234, 222, 75 };
             soundSig.Reserved.Value = "RESERVED";
                         
-            edf1.Signals = new EDFSignal[2] { ecgSig, soundSig };
+            edf1.Signals = new Signal[2] { ecgSig, soundSig };
 
-            var h = new EDFHeader();
+            var h = new Header();
             h.DurationOfDataRecord.Value = 1;
             h.Version.Value = "0";
             h.PatientID.Value = "TEST PATIENT ID";
@@ -61,7 +61,7 @@ namespace EDFSharpTests
             edf1.Save(edfFilePath);
 
             //Read the file back
-            var edf2 = new EDFFile(edfFilePath);
+            var edf2 = new File(edfFilePath);
 
             Assert.AreEqual(edf2.Header.Version.ToAscii(),              edf1.Header.Version.ToAscii());
             Assert.AreEqual(edf2.Header.PatientID.ToAscii(),            edf1.Header.PatientID.ToAscii());

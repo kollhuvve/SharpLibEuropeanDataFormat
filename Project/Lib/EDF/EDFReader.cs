@@ -4,16 +4,16 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace LibEDF_DotNet
+namespace SharpLib.EuropeanDataFormat
 {
-    class EDFReader : BinaryReader
+    class Reader : BinaryReader
     {
-        public EDFReader(FileStream fs) : base(fs) { }
-        public EDFReader(byte[] edfBytes) : base(new MemoryStream(edfBytes)) { }
+        public Reader(FileStream fs) : base(fs) { }
+        public Reader(byte[] edfBytes) : base(new MemoryStream(edfBytes)) { }
 
-        public EDFHeader ReadHeader()
+        public Header ReadHeader()
         {
-            EDFHeader h = new EDFHeader();
+            Header h = new Header();
 
             this.BaseStream.Seek(0, SeekOrigin.Begin);
 
@@ -45,14 +45,14 @@ namespace LibEDF_DotNet
             return h;
         }
 
-        public EDFSignal[] ReadSignals()
+        public Signal[] ReadSignals()
         {
-            EDFHeader header = ReadHeader();
-            EDFSignal[] signals = new EDFSignal[header.NumberOfSignals.Value];
+            Header header = ReadHeader();
+            Signal[] signals = new Signal[header.NumberOfSignals.Value];
 
             for (int i = 0; i < signals.Length; i++)
             {
-                signals[i] = new EDFSignal();
+                signals[i] = new Signal();
                 signals[i].Label.Value = header.Labels.Value[i];
                 signals[i].SampleCountPerRecord.Value = header.NumberOfSamplesInDataRecord.Value[i];
             }
@@ -111,7 +111,7 @@ namespace LibEDF_DotNet
             return samples.ToArray();
         }
 
-        private Int16 ReadInt16(EDFField itemInfo)
+        private Int16 ReadInt16(Field itemInfo)
         {
             string strInt = ReadAscii(itemInfo).Trim();
             Int16 intResult = -1;
@@ -120,13 +120,13 @@ namespace LibEDF_DotNet
             return intResult;
         }
 
-        private string ReadAscii(EDFField itemInfo)
+        private string ReadAscii(Field itemInfo)
         {
             byte[] bytes = this.ReadBytes(itemInfo.AsciiLength);
             return AsciiString(bytes);
         }
 
-        private string[] ReadMultipleAscii(EDFField itemInfo, int numberOfParts)
+        private string[] ReadMultipleAscii(Field itemInfo, int numberOfParts)
         {
             var parts = new List<string>();
 
@@ -138,7 +138,7 @@ namespace LibEDF_DotNet
             return parts.ToArray();
         }
 
-        private int[] ReadMultipleInt(EDFField itemInfo, int numberOfParts)
+        private int[] ReadMultipleInt(Field itemInfo, int numberOfParts)
         {
             var parts = new List<int>();
 
@@ -158,7 +158,7 @@ namespace LibEDF_DotNet
         /// <param name="itemInfo"></param>
         /// <param name="numberOfParts"></param>
         /// <returns></returns>
-        private double[] ReadMultipleDouble(EDFField itemInfo, int numberOfParts)
+        private double[] ReadMultipleDouble(Field itemInfo, int numberOfParts)
         {
             var parts = new List<double>();
 

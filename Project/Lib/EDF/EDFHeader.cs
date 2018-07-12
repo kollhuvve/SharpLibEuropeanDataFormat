@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace LibEDF_DotNet
+namespace SharpLib.EuropeanDataFormat
 {
-    public class EDFField
+    public class Field
     {
         public string Name { get; set; }
         public int AsciiLength { get; set; }
 
-        public EDFField() { }
+        public Field() { }
 
-        public EDFField(string name, int asciiLength) {
+        public Field(string name, int asciiLength) {
             Name = name;
             AsciiLength = asciiLength;
         }
@@ -19,34 +19,34 @@ namespace LibEDF_DotNet
     {
         //Fixed length header items
 
-        public static EDFField Version { get; } = new EDFField("Version", 8);
-        public static EDFField PatientID { get; } = new EDFField("PatientID", 80);
-        public static EDFField RecordID { get; private set; } = new EDFField("RecordID", 80);
-        public static EDFField StartDate { get; private set; } = new EDFField("StartDate", 8);
-        public static EDFField StartTime { get; private set; } = new EDFField("StartTime", 8);
-        public static EDFField NumberOfBytesInHeader { get; private set; } = new EDFField("NumberOfBytesInHeader", 8);
-        public static EDFField Reserved { get; private set; }  = new EDFField("Reserved", 44);
-        public static EDFField NumberOfDataRecords { get; private set; } = new EDFField("NumberOfDataRecords", 8);
-        public static EDFField DurationOfDataRecord { get; private set; } = new EDFField("DurationOfDataRecord", 8);
-        public static EDFField NumberOfSignals { get; private set; } = new EDFField("NumberOfSignals", 4);
+        public static Field Version { get; } = new Field("Version", 8);
+        public static Field PatientID { get; } = new Field("PatientID", 80);
+        public static Field RecordID { get; private set; } = new Field("RecordID", 80);
+        public static Field StartDate { get; private set; } = new Field("StartDate", 8);
+        public static Field StartTime { get; private set; } = new Field("StartTime", 8);
+        public static Field NumberOfBytesInHeader { get; private set; } = new Field("NumberOfBytesInHeader", 8);
+        public static Field Reserved { get; private set; }  = new Field("Reserved", 44);
+        public static Field NumberOfDataRecords { get; private set; } = new Field("NumberOfDataRecords", 8);
+        public static Field DurationOfDataRecord { get; private set; } = new Field("DurationOfDataRecord", 8);
+        public static Field NumberOfSignals { get; private set; } = new Field("NumberOfSignals", 4);
 
         //Variable length header items
 
-        public static EDFField Label { get; private set; } = new EDFField("Labels", 16);
-        public static EDFField TransducerType { get; private set; } = new EDFField("TransducerType", 80);
-        public static EDFField PhysicalDimension { get; private set; } = new EDFField("PhysicalDimension", 8);
-        public static EDFField PhysicalMinimum { get; private set; } = new EDFField("PhysicalMinimum", 8);
-        public static EDFField PhysicalMaximum { get; private set; } = new EDFField("PhysicalMaximum", 8);
-        public static EDFField DigitalMinimum { get; private set; } = new EDFField("DigitalMinimum", 8);
-        public static EDFField DigitalMaximum { get; private set; } = new EDFField("DigitalMaximum", 8);
-        public static EDFField Prefiltering { get; private set; } = new EDFField("Prefiltering", 80);
-        public static EDFField NumberOfSamplesInDataRecord { get; private set; } = new EDFField("NumberOfSamplesInDataRecord", 8);
-        public static EDFField SignalsReserved { get; private set; } = new EDFField("SignalsReserved", 32);
+        public static Field Label { get; private set; } = new Field("Labels", 16);
+        public static Field TransducerType { get; private set; } = new Field("TransducerType", 80);
+        public static Field PhysicalDimension { get; private set; } = new Field("PhysicalDimension", 8);
+        public static Field PhysicalMinimum { get; private set; } = new Field("PhysicalMinimum", 8);
+        public static Field PhysicalMaximum { get; private set; } = new Field("PhysicalMaximum", 8);
+        public static Field DigitalMinimum { get; private set; } = new Field("DigitalMinimum", 8);
+        public static Field DigitalMaximum { get; private set; } = new Field("DigitalMaximum", 8);
+        public static Field Prefiltering { get; private set; } = new Field("Prefiltering", 80);
+        public static Field NumberOfSamplesInDataRecord { get; private set; } = new Field("NumberOfSamplesInDataRecord", 8);
+        public static Field SignalsReserved { get; private set; } = new Field("SignalsReserved", 32);
     }
 
     public abstract class HeaderItem
     {
-        public HeaderItem(EDFField info) {
+        public HeaderItem(Field info) {
             Name = info.Name;
             AsciiLength = info.AsciiLength;
         }
@@ -58,7 +58,7 @@ namespace LibEDF_DotNet
     public class FixedLengthString : HeaderItem
     {
         public string Value { get; set; }
-        public FixedLengthString(EDFField info) : base(info) { }
+        public FixedLengthString(Field info) : base(info) { }
 
         public override string ToAscii() {
             string asciiString = "";
@@ -74,7 +74,7 @@ namespace LibEDF_DotNet
     public class FixedLengthInt : HeaderItem
     {
         public int Value { get; set; }
-        public FixedLengthInt(EDFField info) : base(info) { }
+        public FixedLengthInt(Field info) : base(info) { }
 
         public override string ToAscii()
         {
@@ -91,7 +91,7 @@ namespace LibEDF_DotNet
     public class FixedLengthDouble : HeaderItem
     {
         public double Value { get; set; }
-        public FixedLengthDouble(EDFField info) : base(info) { }
+        public FixedLengthDouble(Field info) : base(info) { }
 
         public override string ToAscii()
         {
@@ -115,7 +115,7 @@ namespace LibEDF_DotNet
     public class VariableLengthString : HeaderItem
     {
         public string[] Value { get; set; }
-        public VariableLengthString(EDFField info) : base(info) { }
+        public VariableLengthString(Field info) : base(info) { }
 
         public override string ToAscii() {
             string ascii = "";
@@ -133,7 +133,7 @@ namespace LibEDF_DotNet
     public class VariableLengthInt : HeaderItem
     {
         public int[] Value { get; set; }
-        public VariableLengthInt(EDFField info) : base(info) { }
+        public VariableLengthInt(Field info) : base(info) { }
 
         public override string ToAscii() {
             string ascii = "";
@@ -151,7 +151,7 @@ namespace LibEDF_DotNet
     public class VariableLengthDouble : HeaderItem
     {
         public double[] Value { get; set; }
-        public VariableLengthDouble(EDFField info) : base(info) { }
+        public VariableLengthDouble(Field info) : base(info) { }
 
         public override string ToAscii() {
             string ascii = "";
@@ -166,7 +166,7 @@ namespace LibEDF_DotNet
         }
     }
 
-    public class EDFHeader
+    public class Header
     {
         public FixedLengthString Version { get; private set; } = new FixedLengthString(HeaderItems.Version);
         public FixedLengthString PatientID { get; private set; } = new FixedLengthString(HeaderItems.PatientID);
@@ -190,7 +190,7 @@ namespace LibEDF_DotNet
         public VariableLengthInt NumberOfSamplesInDataRecord { get; private set; } = new VariableLengthInt(HeaderItems.NumberOfSamplesInDataRecord);
         public VariableLengthString SignalsReserved { get; private set; } = new VariableLengthString(HeaderItems.SignalsReserved);
 
-        public EDFHeader() { }
+        public Header() { }
 
         public override string ToString()
         {

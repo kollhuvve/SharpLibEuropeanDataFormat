@@ -4,13 +4,13 @@ using System.IO;
 using System.Text;
 using System.Linq;
 
-namespace LibEDF_DotNet
+namespace SharpLib.EuropeanDataFormat
 {
-    class EDFWriter : BinaryWriter
+    class Writer : BinaryWriter
     {
-        public EDFWriter(FileStream fs) : base(fs) { }
+        public Writer(FileStream fs) : base(fs) { }
 
-        public void WriteEDF(EDFFile edf, string edfFilePath)
+        public void WriteEDF(File edf, string edfFilePath)
         {
             edf.Header.NumberOfBytesInHeader.Value = CalcNumOfBytesInHeader(edf);
 
@@ -44,10 +44,10 @@ namespace LibEDF_DotNet
             foreach (var sig in edf.Signals) WriteSignal(sig);
 
             Close();
-            Console.WriteLine("File size: " + File.ReadAllBytes(edfFilePath).Length);
+            Console.WriteLine("File size: " + System.IO.File.ReadAllBytes(edfFilePath).Length);
         }
 
-        private int CalcNumOfBytesInHeader(EDFFile edf)
+        private int CalcNumOfBytesInHeader(File edf)
         {
             int totalFixedLength = 256;
             int ns = edf.Signals.Length;
@@ -101,7 +101,7 @@ namespace LibEDF_DotNet
             return Encoding.ASCII.GetBytes(strInt);
         }
 
-        public void WriteSignal(EDFSignal signal)
+        public void WriteSignal(Signal signal)
         {
             Console.WriteLine("Write position before signal: " + this.BaseStream.Position);
             for (int i = 0; i < signal.SampleCountPerRecord.Value; i++)

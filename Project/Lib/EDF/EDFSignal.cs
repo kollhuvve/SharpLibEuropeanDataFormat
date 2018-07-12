@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace LibEDF_DotNet
+namespace SharpLib.EuropeanDataFormat
 {
-    public class EDFSignal
+    public class Signal
     {
         public FixedLengthString Label              { get; } = new FixedLengthString(HeaderItems.Label);
         public FixedLengthString TransducerType     { get; } = new FixedLengthString(HeaderItems.TransducerType);

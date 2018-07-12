@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using LibEDF_DotNet;
+using EDF = SharpLib.EuropeanDataFormat;
 using System.IO;
 using System.Collections.Generic;
 
-namespace LibEDF_DotNetExamples
+namespace EuropeanDataFormatDemo
 {
     class Program
     {
@@ -31,10 +31,10 @@ namespace LibEDF_DotNetExamples
             {
                 Console.WriteLine("======== EDF ========\n" + fileInfo.Name);
                 //Read the file
-                EDFFile edf = new EDFFile(fileInfo.FullName);
+                EDF.File edf = new EDF.File(fileInfo.FullName);
                 Console.WriteLine(edf.Header.ToString());
 
-                foreach (EDFSignal s in edf.Signals)
+                foreach (EDF.Signal s in edf.Signals)
                 {
                     Console.WriteLine(s.ToString());
                 }
@@ -54,10 +54,10 @@ namespace LibEDF_DotNetExamples
         {
 
             //Crreate an empty EDF file
-            var edfFile = new EDFFile();
+            var edfFile = new EDF.File();
 
             //Create a signal object
-            var ecgSig = new EDFSignal();
+            var ecgSig = new EDF.Signal();
             ecgSig.Label.Value = "ECG";
             ecgSig.SampleCountPerRecord.Value = 10;
             ecgSig.PhysicalDimension.Value = "mV";
@@ -71,10 +71,10 @@ namespace LibEDF_DotNetExamples
             ecgSig.Samples = new List<short> { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
 
             //Set the signal
-            edfFile.Signals = new EDFSignal[1] { ecgSig };
+            edfFile.Signals = new EDF.Signal[1] { ecgSig };
 
             //Create the header object
-            var h = new EDFHeader();
+            var h = new EDF.Header();
             h.DurationOfDataRecord.Value = 1;
             h.Version.Value = "0";
             h.PatientID.Value = "TEST PATIENT ID";
@@ -106,7 +106,7 @@ namespace LibEDF_DotNetExamples
             edfFile.Save(fileName);
 
             //Read the file
-            var f = new EDFFile(fileName);
+            var f = new EDF.File(fileName);
 
             Console.ReadLine();
         }
@@ -114,7 +114,7 @@ namespace LibEDF_DotNetExamples
         private static void Example2_Read_EDF_From_Base64(string edfBase64FilePath)
         {
             var edfBase64 = File.ReadAllText(edfBase64FilePath);
-            var edfFile = new EDFFile();
+            var edfFile = new EDF.File();
             edfFile.ReadBase64(edfBase64);
             edfFile.Save(@"C:\temp\edf_bytes.edf");
         }
