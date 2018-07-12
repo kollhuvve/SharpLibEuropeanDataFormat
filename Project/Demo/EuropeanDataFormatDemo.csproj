@@ -49,9 +49,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lib\LibEDF_DotNet.csproj">
+    <ProjectReference Include="..\Lib\SharpLibEuropeanDataFormat.csproj">
       <Project>{7e8b16eb-eb43-4a0f-b4aa-d00bfe41ebe2}</Project>
-      <Name>LibEDF_DotNet</Name>
+      <Name>SharpLibEuropeanDataFormat</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
