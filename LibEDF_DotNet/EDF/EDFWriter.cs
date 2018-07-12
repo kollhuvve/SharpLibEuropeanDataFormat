@@ -40,6 +40,7 @@ namespace LibEDF_DotNet
 
             Console.WriteLine("Writer position after header: " + BaseStream.Position);
             Console.WriteLine("Writing signals.");
+            //TODO: Missing for each record loop, see fixed reading code
             foreach (var sig in edf.Signals) WriteSignal(sig);
 
             Close();

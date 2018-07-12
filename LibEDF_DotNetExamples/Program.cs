@@ -41,6 +41,7 @@ namespace LibEDF_DotNetExamples
 
                 Console.WriteLine("=========================================");
 
+                //TODO: Test saving files, I guess we would need to fix recording writing function
             }
 
 
