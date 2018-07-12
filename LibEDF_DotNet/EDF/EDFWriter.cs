@@ -35,7 +35,7 @@ namespace LibEDF_DotNet
             WriteItem(edf.Signals.Select(s => s.DigitalMinimum));
             WriteItem(edf.Signals.Select(s => s.DigitalMaximum));
             WriteItem(edf.Signals.Select(s => s.Prefiltering));
-            WriteItem(edf.Signals.Select(s => s.NumberOfSamples));
+            WriteItem(edf.Signals.Select(s => s.SampleCountPerRecord));
             WriteItem(edf.Signals.Select(s => s.Reserved));
 
             Console.WriteLine("Writer position after header: " + BaseStream.Position);
@@ -103,7 +103,7 @@ namespace LibEDF_DotNet
         public void WriteSignal(EDFSignal signal)
         {
             Console.WriteLine("Write position before signal: " + this.BaseStream.Position);
-            for (int i = 0; i < signal.NumberOfSamples.Value; i++)
+            for (int i = 0; i < signal.SampleCountPerRecord.Value; i++)
             {
                 this.Write(BitConverter.GetBytes(signal.Samples[i]));
             }

@@ -2,6 +2,7 @@
 using System.Linq;
 using LibEDF_DotNet;
 using System.IO;
+using System.Collections.Generic;
 
 namespace LibEDF_DotNetExamples
 {
@@ -9,13 +10,47 @@ namespace LibEDF_DotNetExamples
     {
         static void Main(string[] args)
         {
-            Example1_Create_And_Save_EDF();
+            //Example1_Create_And_Save_EDF();
 
-            if(args.Length >= 1)
-                Example2_Read_EDF_From_Base64(args[0]);
+            //if(args.Length >= 1)
+            //Example2_Read_EDF_From_Base64(args[0]);
+
+            // Read and dump some data
+
+            if (args.Count()!=1)
+            {
+                Console.WriteLine("Error: Expecting path to folder as argument!");
+                // Exit code?
+                return;
+            }
+
+            string filepath = args[0];
+            DirectoryInfo d = new DirectoryInfo(filepath);
+
+            foreach (FileInfo fileInfo in d.GetFiles("*.edf"))
+            {
+                Console.WriteLine("======== EDF ========\n" + fileInfo.Name);
+                //Read the file
+                EDFFile edf = new EDFFile(fileInfo.FullName);
+                Console.WriteLine(edf.Header.ToString());
+
+                foreach (EDFSignal s in edf.Signals)
+                {
+                    Console.WriteLine(s.ToString());
+                }
+
+                Console.WriteLine("=========================================");
+
+            }
+
+
+
+            Console.ReadLine();
+
         }
 
-        private static void Example1_Create_And_Save_EDF() {
+        private static void Example1_Create_And_Save_EDF()
+        {
 
             //Crreate an empty EDF file
             var edfFile = new EDFFile();
@@ -23,7 +58,7 @@ namespace LibEDF_DotNetExamples
             //Create a signal object
             var ecgSig = new EDFSignal();
             ecgSig.Label.Value = "ECG";
-            ecgSig.NumberOfSamples.Value = 10;
+            ecgSig.SampleCountPerRecord.Value = 10;
             ecgSig.PhysicalDimension.Value = "mV";
             ecgSig.DigitalMinimum.Value = -2048;
             ecgSig.DigitalMaximum.Value = 2047;
@@ -32,7 +67,7 @@ namespace LibEDF_DotNetExamples
             ecgSig.TransducerType.Value = "UNKNOWN";
             ecgSig.Prefiltering.Value = "UNKNOWN";
             ecgSig.Reserved.Value = "RESERVED";
-            ecgSig.Samples = new short[] { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
+            ecgSig.Samples = new List<short> { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
 
             //Set the signal
             edfFile.Signals = new EDFSignal[1] { ecgSig };
@@ -75,7 +110,8 @@ namespace LibEDF_DotNetExamples
             Console.ReadLine();
         }
 
-        private static void Example2_Read_EDF_From_Base64(string edfBase64FilePath) {
+        private static void Example2_Read_EDF_From_Base64(string edfBase64FilePath)
+        {
             var edfBase64 = File.ReadAllText(edfBase64FilePath);
             var edfFile = new EDFFile();
             edfFile.ReadBase64(edfBase64);

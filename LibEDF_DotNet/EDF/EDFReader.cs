@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -49,23 +50,48 @@ namespace LibEDF_DotNet
             EDFHeader header = ReadHeader();
             EDFSignal[] signals = new EDFSignal[header.NumberOfSignals.Value];
 
-            for (int i = 0; i < signals.Length; i++) {
+            for (int i = 0; i < signals.Length; i++)
+            {
                 signals[i] = new EDFSignal();
                 signals[i].Label.Value = header.Labels.Value[i];
-                signals[i].NumberOfSamples.Value = header.NumberOfSamplesInDataRecord.Value[i];
+                signals[i].SampleCountPerRecord.Value = header.NumberOfSamplesInDataRecord.Value[i];
             }
 
             //Read the signal sample values
-            int readPosition = header.NumberOfBytesInHeader.Value;
+            //int readPosition = header.NumberOfBytesInHeader.Value;
 
-            for (int i = 0; i < signals.Length; i++)
+            // For each record
+            for (int j = 0; j < header.NumberOfDataRecords.Value; j++)
             {
-                signals[i].Samples = ReadSignalSamples(readPosition, signals[i].NumberOfSamples.Value);
-                readPosition += signals[i].Samples.Length * 2; //2 bytes per integer.
+                // For each signal
+                for (int i = 0; i < signals.Length; i++)
+                {
+                    // Read that signal samples
+                    ReadNextSignalSamples(signals[i].Samples, signals[i].SampleCountPerRecord.Value);                    
+                }
             }
 
             return signals;
         }
+        
+        /// <summary>
+        /// Read n next samples
+        /// </summary>
+        /// <param name="aSamples"></param>
+        /// <param name="aSampleCount"></param>
+        private void ReadNextSignalSamples(ICollection<short> aSamples, int aSampleCount)
+        {
+            for (int i=0;i<aSampleCount;i++)
+            {
+                //TODO: simplify that?
+                byte[] intBytes = this.ReadBytes(sizeof(short));
+                short intVal = BitConverter.ToInt16(intBytes, 0);
+                aSamples.Add(intVal);
+            }
+
+        }
+
+
 
         private short[] ReadSignalSamples(int startPosition, int numberOfSamples)
         {
@@ -126,6 +152,12 @@ namespace LibEDF_DotNet
             return parts.ToArray();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemInfo"></param>
+        /// <param name="numberOfParts"></param>
+        /// <returns></returns>
         private double[] ReadMultipleDouble(EDFField itemInfo, int numberOfParts)
         {
             var parts = new List<double>();
@@ -134,7 +166,8 @@ namespace LibEDF_DotNet
             {
                 byte[] bytes = this.ReadBytes(itemInfo.AsciiLength);
                 string ascii = AsciiString(bytes);
-                parts.Add(Convert.ToDouble(ascii));
+                // Use invariant culure as we have a '.' as decimal separator
+                parts.Add(double.Parse(ascii, CultureInfo.InvariantCulture));
             }
 
             return parts.ToArray();

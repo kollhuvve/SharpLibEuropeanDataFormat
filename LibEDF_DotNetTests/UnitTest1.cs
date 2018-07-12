@@ -15,7 +15,7 @@ namespace EDFSharpTests
 
             var ecgSig = new EDFSignal();
             ecgSig.Label.Value = "ECG";
-            ecgSig.NumberOfSamples.Value = 10; //Small number of samples for testing
+            ecgSig.SampleCountPerRecord.Value = 10; //Small number of samples for testing
             ecgSig.PhysicalDimension.Value = "mV";
             ecgSig.DigitalMinimum.Value = -2048;
             ecgSig.DigitalMaximum.Value = 2047;
@@ -28,7 +28,7 @@ namespace EDFSharpTests
 
             var soundSig = new EDFSignal();
             soundSig.Label.Value = "SOUND";
-            soundSig.NumberOfSamples.Value = 10;//Small number of samples for testing
+            soundSig.SampleCountPerRecord.Value = 10;//Small number of samples for testing
             soundSig.PhysicalDimension.Value = "mV";
             soundSig.DigitalMinimum.Value = -2048;
             soundSig.DigitalMaximum.Value = 2047;

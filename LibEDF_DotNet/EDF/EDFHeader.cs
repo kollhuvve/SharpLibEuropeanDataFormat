@@ -196,6 +196,7 @@ namespace LibEDF_DotNet
         {
             string strOutput = "";
 
+            strOutput += "\n---------- EDF File Header ---------\n";
             strOutput += "8b\tVersion [" + Version.Value + "]\n";
             strOutput += "80b\tPatient ID [" + PatientID.Value + "]\n";
             strOutput += "80b\tRecording ID [" + RecordID.Value + "]\n";
@@ -207,18 +208,25 @@ namespace LibEDF_DotNet
             strOutput += "8b\tDuration of data record [" + DurationOfDataRecord.Value + "]\n";
             strOutput += "4b\tNumber of signals [" + NumberOfSignals.Value + "]\n";
 
-            strOutput += "\tLabels [" + Labels.Value + "]\n";
-            strOutput += "\tTransducer type [" + TransducerType.Value + "]\n";
-            strOutput += "\tPhysical dimension [" + PhysicalDimension.Value + "]\n";
-            strOutput += "\tPhysical minimum [" + PhysicalMinimum.Value + "]\n";
-            strOutput += "\tPhysical maximum [" + PhysicalMaximum.Value + "]\n";
-            strOutput += "\tDigital minimum [" + DigitalMinimum.Value + "]\n";
-            strOutput += "\tDigital maximum [" + DigitalMaximum.Value + "]\n";
-            strOutput += "\tPrefiltering [" + Prefiltering.Value + "]\n";
-            strOutput += "\tNumber of samples in data record [" + NumberOfSamplesInDataRecord.Value + "]\n";
-            strOutput += "\tSignals reserved [" + SignalsReserved.Value + "]\n";
+            for (int i=0;i<NumberOfSignals.Value;i++)
+            {
+                strOutput += "---------Signal Header---------\n";
+                strOutput += "\tLabel [" + Labels.Value[i] + "]\n";
+                strOutput += "\tTransducer type [" + TransducerType.Value[i] + "]\n";
+                strOutput += "\tPhysical dimension [" + PhysicalDimension.Value[i] + "]\n";
+                strOutput += "\tPhysical minimum [" + PhysicalMinimum.Value[i] + "]\n";
+                strOutput += "\tPhysical maximum [" + PhysicalMaximum.Value[i] + "]\n";
+                strOutput += "\tDigital minimum [" + DigitalMinimum.Value[i] + "]\n";
+                strOutput += "\tDigital maximum [" + DigitalMaximum.Value[i] + "]\n";
+                strOutput += "\tPrefiltering [" + Prefiltering.Value[i] + "]\n";
+                strOutput += "\tNumber of samples in data record [" + NumberOfSamplesInDataRecord.Value[i] + "]\n";
+                strOutput += "\tSignals reserved [" + SignalsReserved.Value[i] + "]\n";
+            }
 
-            Console.WriteLine("\n---------- EDF File Header ---------\n" + strOutput);
+
+            strOutput += "\n-----------------------------------\n";
+
+            //Console.WriteLine();
 
             return strOutput;
         }
