@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>SharpLibEuropeanFileFormat</id>
+        <id>SharpLibEuropeanDataFormat</id>
         <version>0.0.1</version>
-        <title>European File Format Library (EDF)</title>
+        <title>European Data Format Library (EDF)</title>
         <authors>Stéphane Lenclud</authors>
         <owners>Stéphane Lenclud</owners>
         <licenseUrl>https://github.com/Slion/SharpLibEuropeanDataFormat/blob/master/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/Slion/SharpLibEuropeanDataFormat</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>C# library providing easy access to European File Format (EDF) content.</description>
+        <description>C# library providing easy access to European Data Format (EDF) content.</description>
         <releaseNotes>Initial release.</releaseNotes>
         <copyright>Stéphane Lenclud</copyright>
         <language />
-        <tags>European File Format EDF</tags>
+        <tags>European Data Format EDF</tags>
     </metadata>
     <files>
-        <file src="..\Project\Lib\Release\SharpLibEuropeanFileFormat.dll" target="lib\net40\SharpLibEuropeanFileFormat.dll" />
+        <file src="..\Project\Lib\bin\Release\SharpLibEuropeanDataFormat.dll" target="lib\net40\SharpLibEuropeanDataFormat.dll" />
     </files>
 </package>
