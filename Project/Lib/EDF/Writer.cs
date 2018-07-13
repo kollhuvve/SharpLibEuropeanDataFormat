@@ -12,19 +12,19 @@ namespace SharpLib.EuropeanDataFormat
 
         public void WriteEDF(File edf, string edfFilePath)
         {
-            edf.Header.NumberOfBytesInHeader.Value = CalcNumOfBytesInHeader(edf);
+            edf.Header.SizeInBytes.Value = CalcNumOfBytesInHeader(edf);
 
             //----------------- Fixed length header items -----------------
             WriteItem(edf.Header.Version);
             WriteItem(edf.Header.PatientID);
             WriteItem(edf.Header.RecordID);
-            WriteItem(edf.Header.StartDate);
-            WriteItem(edf.Header.StartTime);
-            WriteItem(edf.Header.NumberOfBytesInHeader);
+            WriteItem(edf.Header.RecordingStartDate);
+            WriteItem(edf.Header.RecordingStartTime);
+            WriteItem(edf.Header.SizeInBytes);
             WriteItem(edf.Header.Reserved);
-            WriteItem(edf.Header.NumberOfDataRecords);
-            WriteItem(edf.Header.DurationOfDataRecord);
-            WriteItem(edf.Header.NumberOfSignals);
+            WriteItem(edf.Header.RecordCount);
+            WriteItem(edf.Header.RecordDurationInSeconds);
+            WriteItem(edf.Header.SignalCount);
 
             //----------------- Variable length header items -----------------
             WriteItem(edf.Signals.Select(s => s.Label));

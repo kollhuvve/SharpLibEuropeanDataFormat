@@ -43,16 +43,16 @@ namespace EDFSharpTests
             edf1.Signals = new Signal[2] { ecgSig, soundSig };
 
             var h = new Header();
-            h.DurationOfDataRecord.Value = 1;
+            h.RecordDurationInSeconds.Value = 1;
             h.Version.Value = "0";
             h.PatientID.Value = "TEST PATIENT ID";
             h.RecordID.Value = "TEST RECORD ID";
-            h.StartDate.Value = "11.11.16"; //dd.mm.yy
-            h.StartTime.Value = "12.12.12"; //hh.mm.ss
+            h.RecordingStartDate.Value = "11.11.16"; //dd.mm.yy
+            h.RecordingStartTime.Value = "12.12.12"; //hh.mm.ss
             h.Reserved.Value = "RESERVED";
-            h.NumberOfDataRecords.Value = 1;
-            h.NumberOfSignals.Value = (short)edf1.Signals.Length;
-            h.SignalsReserved.Value = Enumerable.Repeat("RESERVED".PadRight(32, ' '), h.NumberOfSignals.Value).ToArray();
+            h.RecordCount.Value = 1;
+            h.SignalCount.Value = (short)edf1.Signals.Length;
+            h.Signals.Reserveds.Value = Enumerable.Repeat("RESERVED".PadRight(32, ' '), h.SignalCount.Value).ToArray();
 
             edf1.Header = h;
 
@@ -66,12 +66,12 @@ namespace EDFSharpTests
             Assert.AreEqual(edf2.Header.Version.ToAscii(),              edf1.Header.Version.ToAscii());
             Assert.AreEqual(edf2.Header.PatientID.ToAscii(),            edf1.Header.PatientID.ToAscii());
             Assert.AreEqual(edf2.Header.RecordID.ToAscii(),             edf1.Header.RecordID.ToAscii());
-            Assert.AreEqual(edf2.Header.StartDate.ToAscii(),            edf1.Header.StartDate.ToAscii());
-            Assert.AreEqual(edf2.Header.StartTime.ToAscii(),            edf1.Header.StartTime.ToAscii());
+            Assert.AreEqual(edf2.Header.RecordingStartDate.ToAscii(),            edf1.Header.RecordingStartDate.ToAscii());
+            Assert.AreEqual(edf2.Header.RecordingStartTime.ToAscii(),            edf1.Header.RecordingStartTime.ToAscii());
             Assert.AreEqual(edf2.Header.Reserved.ToAscii(),             edf1.Header.Reserved.ToAscii());
-            Assert.AreEqual(edf2.Header.NumberOfDataRecords.ToAscii(),  edf1.Header.NumberOfDataRecords.ToAscii());
-            Assert.AreEqual(edf2.Header.NumberOfSignals.ToAscii(),      edf1.Header.NumberOfSignals.ToAscii());
-            Assert.AreEqual(edf2.Header.SignalsReserved.ToAscii(),      edf1.Header.SignalsReserved.ToAscii());
+            Assert.AreEqual(edf2.Header.RecordCount.ToAscii(),  edf1.Header.RecordCount.ToAscii());
+            Assert.AreEqual(edf2.Header.SignalCount.ToAscii(),      edf1.Header.SignalCount.ToAscii());
+            Assert.AreEqual(edf2.Header.Signals.Reserveds.ToAscii(),      edf1.Header.Signals.Reserveds.ToAscii());
             Assert.AreEqual(edf2.Signals[0].Samples.Count,             edf1.Signals[0].Samples.Count);
         }
     }

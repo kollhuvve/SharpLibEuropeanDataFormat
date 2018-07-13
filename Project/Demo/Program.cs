@@ -29,7 +29,7 @@ namespace EuropeanDataFormatDemo
 
             foreach (FileInfo fileInfo in d.GetFiles("*.edf"))
             {
-                Console.WriteLine("======== EDF ========\n" + fileInfo.Name);
+                Console.WriteLine("======== EDF: " + fileInfo.Name + "========");
                 //Read the file
                 EDF.File edf = new EDF.File(fileInfo.FullName);
                 Console.WriteLine(edf.Header.ToString());
@@ -39,7 +39,7 @@ namespace EuropeanDataFormatDemo
                     Console.WriteLine(s.ToString());
                 }
 
-                Console.WriteLine("=========================================");
+                Console.WriteLine("=========================================\n");
 
 
                 //Console.WriteLine("Scaled sample test: " + edf.Signals[31].ScaledSample(0));
@@ -79,17 +79,17 @@ namespace EuropeanDataFormatDemo
 
             //Create the header object
             var h = new EDF.Header();
-            h.DurationOfDataRecord.Value = 1;
+            h.RecordDurationInSeconds.Value = 1;
             h.Version.Value = "0";
             h.PatientID.Value = "TEST PATIENT ID";
             h.RecordID.Value = "TEST RECORD ID";
-            h.StartDate.Value = "11.11.16"; //dd.mm.yy
-            h.StartTime.Value = "12.12.12"; //hh.mm.ss
+            h.RecordingStartDate.Value = "11.11.16"; //dd.mm.yy
+            h.RecordingStartTime.Value = "12.12.12"; //hh.mm.ss
             h.Reserved.Value = "RESERVED";
-            h.NumberOfDataRecords.Value = 1;
-            h.NumberOfSignals.Value = (short)edfFile.Signals.Length;
-            h.SignalsReserved.Value = Enumerable.Repeat("RESERVED".PadRight(32, ' '),
-                                                h.NumberOfSignals.Value).ToArray();
+            h.RecordCount.Value = 1;
+            h.SignalCount.Value = (short)edfFile.Signals.Length;
+            h.Signals.Reserveds.Value = Enumerable.Repeat("RESERVED".PadRight(32, ' '),
+                                                h.SignalCount.Value).ToArray();
 
             //Set the header
             edfFile.Header = h;
@@ -97,8 +97,8 @@ namespace EuropeanDataFormatDemo
             //Print some info
             Console.Write(
                 "\nPatient ID:\t\t" + edfFile.Header.PatientID.Value +
-                "\nNumber of signals:\t" + edfFile.Header.NumberOfSignals.Value +
-                "\nStart date:\t\t" + edfFile.Header.StartDate.Value +
+                "\nNumber of signals:\t" + edfFile.Header.SignalCount.Value +
+                "\nStart date:\t\t" + edfFile.Header.RecordingStartDate.Value +
                 "\nSignal label:\t\t" + edfFile.Signals[0].Label.Value +
                 "\nSignal samples:\t\t"
                     + String.Join(",", edfFile.Signals[0].Samples.Skip(0).Take(10).ToArray())

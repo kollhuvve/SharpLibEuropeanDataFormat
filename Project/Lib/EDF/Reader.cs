@@ -17,30 +17,31 @@ namespace SharpLib.EuropeanDataFormat
 
             this.BaseStream.Seek(0, SeekOrigin.Begin);
 
-            //------ Fixed length header part --------
-            h.Version.Value                 = ReadAscii(HeaderItems.Version);
-            h.PatientID.Value               = ReadAscii(HeaderItems.PatientID);
-            h.RecordID.Value                = ReadAscii(HeaderItems.RecordID);
-            h.StartDate.Value               = ReadAscii(HeaderItems.StartDate);
-            h.StartTime.Value               = ReadAscii(HeaderItems.StartTime);
-            h.NumberOfBytesInHeader.Value   = ReadInt16(HeaderItems.NumberOfBytesInHeader);
-            h.Reserved.Value                = ReadAscii(HeaderItems.Reserved);
-            h.NumberOfDataRecords.Value     = ReadInt16(HeaderItems.NumberOfDataRecords);
-            h.DurationOfDataRecord.Value    = ReadInt16(HeaderItems.DurationOfDataRecord);
-            h.NumberOfSignals.Value         = ReadInt16(HeaderItems.NumberOfSignals);
+            // Fixed size header
+            h.Version.Value = ReadAscii(HeaderItems.Version);
+            h.PatientID.Value = ReadAscii(HeaderItems.PatientID);
+            h.RecordID.Value = ReadAscii(HeaderItems.RecordID);
+            h.RecordingStartDate.Value = ReadAscii(HeaderItems.RecordingStartDate);
+            h.RecordingStartTime.Value = ReadAscii(HeaderItems.RecordingStartTime);
+            h.SizeInBytes.Value = ReadInt16(HeaderItems.SizeInBytes);
+            h.Reserved.Value = ReadAscii(HeaderItems.Reserved);
+            h.RecordCount.Value = ReadInt16(HeaderItems.NumberOfDataRecords);
+            h.RecordDurationInSeconds.Value = ReadInt16(HeaderItems.RecordDurationInSeconds);
+            h.SignalCount.Value = ReadInt16(HeaderItems.SignalCount);
 
-            //------ Variable length header part --------
-            int ns = h.NumberOfSignals.Value;
-            h.Labels.Value                      = ReadMultipleAscii(HeaderItems.Label, ns);
-            h.TransducerType.Value              = ReadMultipleAscii(HeaderItems.TransducerType, ns);
-            h.PhysicalDimension.Value           = ReadMultipleAscii(HeaderItems.PhysicalDimension, ns);
-            h.PhysicalMinimum.Value             = ReadMultipleDouble(HeaderItems.PhysicalMinimum, ns);
-            h.PhysicalMaximum.Value             = ReadMultipleDouble(HeaderItems.PhysicalMaximum, ns);
-            h.DigitalMinimum.Value              = ReadMultipleInt(HeaderItems.DigitalMinimum, ns);
-            h.DigitalMaximum.Value              = ReadMultipleInt(HeaderItems.DigitalMaximum, ns);
-            h.Prefiltering.Value                = ReadMultipleAscii(HeaderItems.Prefiltering, ns);
-            h.SampleCountPerRecord.Value = ReadMultipleInt(HeaderItems.NumberOfSamplesInDataRecord, ns);
-            h.SignalsReserved.Value             = ReadMultipleAscii(HeaderItems.SignalsReserved, ns);
+            // Variable size header
+            // Contains signal headers
+            int ns = h.SignalCount.Value;
+            h.Signals.Labels.Value = ReadMultipleAscii(HeaderItems.Label, ns);
+            h.Signals.TransducerTypes.Value = ReadMultipleAscii(HeaderItems.TransducerType, ns);
+            h.Signals.PhysicalDimensions.Value = ReadMultipleAscii(HeaderItems.PhysicalDimension, ns);
+            h.Signals.PhysicalMinimums.Value = ReadMultipleDouble(HeaderItems.PhysicalMinimum, ns);
+            h.Signals.PhysicalMaximums.Value = ReadMultipleDouble(HeaderItems.PhysicalMaximum, ns);
+            h.Signals.DigitalMinimums.Value = ReadMultipleInt(HeaderItems.DigitalMinimum, ns);
+            h.Signals.DigitalMaximums.Value = ReadMultipleInt(HeaderItems.DigitalMaximum, ns);
+            h.Signals.Prefilterings.Value = ReadMultipleAscii(HeaderItems.Prefiltering, ns);
+            h.Signals.SampleCountPerRecords.Value = ReadMultipleInt(HeaderItems.NumberOfSamplesInDataRecord, ns);
+            h.Signals.Reserveds.Value = ReadMultipleAscii(HeaderItems.SignalsReserved, ns);
 
             return h;
         }
@@ -48,29 +49,29 @@ namespace SharpLib.EuropeanDataFormat
         public Signal[] ReadSignals()
         {
             Header header = ReadHeader();
-            Signal[] signals = new Signal[header.NumberOfSignals.Value];
+            Signal[] signals = new Signal[header.SignalCount.Value];
 
             for (int i = 0; i < signals.Length; i++)
             {
                 signals[i] = new Signal();
                 // Just copy data from the header, ugly architecture really...
-                signals[i].Label.Value = header.Labels.Value[i];
-                signals[i].TransducerType.Value = header.TransducerType.Value[i];
-                signals[i].PhysicalDimension.Value = header.PhysicalDimension.Value[i];
-                signals[i].PhysicalMinimum.Value = header.PhysicalMinimum.Value[i];
-                signals[i].PhysicalMaximum.Value = header.PhysicalMaximum.Value[i];
-                signals[i].DigitalMinimum.Value = header.DigitalMinimum.Value[i];
-                signals[i].DigitalMaximum.Value = header.DigitalMaximum.Value[i];
-                signals[i].Prefiltering.Value = header.Prefiltering.Value[i];
-                signals[i].Reserved.Value = header.SignalsReserved.Value[i];
-                signals[i].SampleCountPerRecord.Value = header.SampleCountPerRecord.Value[i];
+                signals[i].Label.Value = header.Signals.Labels.Value[i];
+                signals[i].TransducerType.Value = header.Signals.TransducerTypes.Value[i];
+                signals[i].PhysicalDimension.Value = header.Signals.PhysicalDimensions.Value[i];
+                signals[i].PhysicalMinimum.Value = header.Signals.PhysicalMinimums.Value[i];
+                signals[i].PhysicalMaximum.Value = header.Signals.PhysicalMaximums.Value[i];
+                signals[i].DigitalMinimum.Value = header.Signals.DigitalMinimums.Value[i];
+                signals[i].DigitalMaximum.Value = header.Signals.DigitalMaximums.Value[i];
+                signals[i].Prefiltering.Value = header.Signals.Prefilterings.Value[i];
+                signals[i].Reserved.Value = header.Signals.Reserveds.Value[i];
+                signals[i].SampleCountPerRecord.Value = header.Signals.SampleCountPerRecords.Value[i];
             }
 
             //Read the signal sample values
             //int readPosition = header.NumberOfBytesInHeader.Value;
 
             // For each record
-            for (int j = 0; j < header.NumberOfDataRecords.Value; j++)
+            for (int j = 0; j < header.RecordCount.Value; j++)
             {
                 // For each signal
                 for (int i = 0; i < signals.Length; i++)

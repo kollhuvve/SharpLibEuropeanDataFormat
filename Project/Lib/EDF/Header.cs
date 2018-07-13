@@ -18,20 +18,18 @@ namespace SharpLib.EuropeanDataFormat
     public class HeaderItems
     {
         //Fixed length header items
-
         public static Field Version { get; } = new Field("Version", 8);
         public static Field PatientID { get; } = new Field("PatientID", 80);
         public static Field RecordID { get; private set; } = new Field("RecordID", 80);
-        public static Field StartDate { get; private set; } = new Field("StartDate", 8);
-        public static Field StartTime { get; private set; } = new Field("StartTime", 8);
-        public static Field NumberOfBytesInHeader { get; private set; } = new Field("NumberOfBytesInHeader", 8);
+        public static Field RecordingStartDate { get; private set; } = new Field("StartDate", 8);
+        public static Field RecordingStartTime { get; private set; } = new Field("StartTime", 8);
+        public static Field SizeInBytes { get; private set; } = new Field("NumberOfBytesInHeader", 8);
         public static Field Reserved { get; private set; }  = new Field("Reserved", 44);
         public static Field NumberOfDataRecords { get; private set; } = new Field("NumberOfDataRecords", 8);
-        public static Field DurationOfDataRecord { get; private set; } = new Field("DurationOfDataRecord", 8);
-        public static Field NumberOfSignals { get; private set; } = new Field("NumberOfSignals", 4);
+        public static Field RecordDurationInSeconds { get; private set; } = new Field("DurationOfDataRecord", 8);
+        public static Field SignalCount { get; private set; } = new Field("NumberOfSignals", 4);
 
-        //Variable length header items
-
+        //Variable size signal header items
         public static Field Label { get; private set; } = new Field("Labels", 16);
         public static Field TransducerType { get; private set; } = new Field("TransducerType", 80);
         public static Field PhysicalDimension { get; private set; } = new Field("PhysicalDimension", 8);
@@ -171,24 +169,29 @@ namespace SharpLib.EuropeanDataFormat
         public FixedLengthString Version { get; private set; } = new FixedLengthString(HeaderItems.Version);
         public FixedLengthString PatientID { get; private set; } = new FixedLengthString(HeaderItems.PatientID);
         public FixedLengthString RecordID { get; private set; } = new FixedLengthString(HeaderItems.RecordID);
-        public FixedLengthString StartDate { get; private set; } = new FixedLengthString(HeaderItems.StartDate);
-        public FixedLengthString StartTime { get; private set; } = new FixedLengthString(HeaderItems.StartTime);
-        public FixedLengthInt NumberOfBytesInHeader { get; private set; } = new FixedLengthInt(HeaderItems.NumberOfBytesInHeader);
+        public FixedLengthString RecordingStartDate { get; private set; } = new FixedLengthString(HeaderItems.RecordingStartDate);
+        public FixedLengthString RecordingStartTime { get; private set; } = new FixedLengthString(HeaderItems.RecordingStartTime);
+        public FixedLengthInt SizeInBytes { get; private set; } = new FixedLengthInt(HeaderItems.SizeInBytes);
         public FixedLengthString Reserved { get; private set; } = new FixedLengthString(HeaderItems.Reserved);
-        public FixedLengthInt NumberOfDataRecords { get; private set; } = new FixedLengthInt(HeaderItems.NumberOfDataRecords);
-        public FixedLengthInt DurationOfDataRecord { get; private set; } = new FixedLengthInt(HeaderItems.DurationOfDataRecord);
-        public FixedLengthInt NumberOfSignals { get; private set; } = new FixedLengthInt(HeaderItems.NumberOfSignals);
+        public FixedLengthInt RecordCount { get; private set; } = new FixedLengthInt(HeaderItems.NumberOfDataRecords);
+        public FixedLengthInt RecordDurationInSeconds { get; private set; } = new FixedLengthInt(HeaderItems.RecordDurationInSeconds);
+        public FixedLengthInt SignalCount { get; private set; } = new FixedLengthInt(HeaderItems.SignalCount);
 
-        public VariableLengthString Labels { get; private set; } = new VariableLengthString(HeaderItems.Label);
-        public VariableLengthString TransducerType { get; private set; } = new VariableLengthString(HeaderItems.TransducerType);
-        public VariableLengthString PhysicalDimension { get; private set; } = new VariableLengthString(HeaderItems.PhysicalDimension);
-        public VariableLengthDouble PhysicalMinimum { get; private set; } = new VariableLengthDouble(HeaderItems.PhysicalMinimum);
-        public VariableLengthDouble PhysicalMaximum { get; private set; } = new VariableLengthDouble(HeaderItems.PhysicalMaximum);
-        public VariableLengthInt DigitalMinimum { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMinimum);
-        public VariableLengthInt DigitalMaximum { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMaximum);
-        public VariableLengthString Prefiltering { get; private set; } = new VariableLengthString(HeaderItems.Prefiltering);
-        public VariableLengthInt SampleCountPerRecord { get; private set; } = new VariableLengthInt(HeaderItems.NumberOfSamplesInDataRecord);
-        public VariableLengthString SignalsReserved { get; private set; } = new VariableLengthString(HeaderItems.SignalsReserved);
+        public class Signal
+        {        
+            public VariableLengthString Labels { get; private set; } = new VariableLengthString(HeaderItems.Label);
+            public VariableLengthString TransducerTypes { get; private set; } = new VariableLengthString(HeaderItems.TransducerType);
+            public VariableLengthString PhysicalDimensions { get; private set; } = new VariableLengthString(HeaderItems.PhysicalDimension);
+            public VariableLengthDouble PhysicalMinimums { get; private set; } = new VariableLengthDouble(HeaderItems.PhysicalMinimum);
+            public VariableLengthDouble PhysicalMaximums { get; private set; } = new VariableLengthDouble(HeaderItems.PhysicalMaximum);
+            public VariableLengthInt DigitalMinimums { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMinimum);
+            public VariableLengthInt DigitalMaximums { get; private set; } = new VariableLengthInt(HeaderItems.DigitalMaximum);
+            public VariableLengthString Prefilterings { get; private set; } = new VariableLengthString(HeaderItems.Prefiltering);
+            public VariableLengthInt SampleCountPerRecords { get; private set; } = new VariableLengthInt(HeaderItems.NumberOfSamplesInDataRecord);
+            public VariableLengthString Reserveds { get; private set; } = new VariableLengthString(HeaderItems.SignalsReserved);
+        }
+
+        public Signal Signals = new Header.Signal();
 
         public Header() { }
 
@@ -200,27 +203,27 @@ namespace SharpLib.EuropeanDataFormat
             strOutput += "8b\tVersion [" + Version.Value + "]\n";
             strOutput += "80b\tPatient ID [" + PatientID.Value + "]\n";
             strOutput += "80b\tRecording ID [" + RecordID.Value + "]\n";
-            strOutput += "8b\tStart Date [" + StartDate.Value + "]\n";
-            strOutput += "8b\tStart Time [" + StartTime.Value + "\n]";
-            strOutput += "8b\tNumber of bytes in header [" + NumberOfBytesInHeader.Value + "]\n";
+            strOutput += "8b\tStart Date [" + RecordingStartDate.Value + "]\n";
+            strOutput += "8b\tStart Time [" + RecordingStartTime.Value + "]\n";
+            strOutput += "8b\tHeader size (bytes) [" + SizeInBytes.Value + "]\n";
             strOutput += "44b\tReserved [" + Reserved.Value + "]\n";
-            strOutput += "8b\tNumber of data records [" + NumberOfDataRecords.Value + "]\n";
-            strOutput += "8b\tDuration of data record [" + DurationOfDataRecord.Value + "]\n";
-            strOutput += "4b\tNumber of signals [" + NumberOfSignals.Value + "]\n";
+            strOutput += "8b\tRecord count [" + RecordCount.Value + "]\n";
+            strOutput += "8b\tRecord duration [" + RecordDurationInSeconds.Value + "]\n";
+            strOutput += "4b\tSignal count [" + SignalCount.Value + "]\n";
 
-            for (int i=0;i<NumberOfSignals.Value;i++)
+            for (int i=0;i<SignalCount.Value;i++)
             {
                 strOutput += "---------Signal Header---------\n";
-                strOutput += "\tLabel [" + Labels.Value[i] + "]\n";
-                strOutput += "\tTransducer type [" + TransducerType.Value[i] + "]\n";
-                strOutput += "\tPhysical dimension [" + PhysicalDimension.Value[i] + "]\n";
-                strOutput += "\tPhysical minimum [" + PhysicalMinimum.Value[i] + "]\n";
-                strOutput += "\tPhysical maximum [" + PhysicalMaximum.Value[i] + "]\n";
-                strOutput += "\tDigital minimum [" + DigitalMinimum.Value[i] + "]\n";
-                strOutput += "\tDigital maximum [" + DigitalMaximum.Value[i] + "]\n";
-                strOutput += "\tPrefiltering [" + Prefiltering.Value[i] + "]\n";
-                strOutput += "\tNumber of samples in data record [" + SampleCountPerRecord.Value[i] + "]\n";
-                strOutput += "\tSignals reserved [" + SignalsReserved.Value[i] + "]\n";
+                strOutput += "\tLabel [" + Signals.Labels.Value[i] + "]\n";
+                strOutput += "\tTransducer type [" + Signals.TransducerTypes.Value[i] + "]\n";
+                strOutput += "\tPhysical dimension [" + Signals.PhysicalDimensions.Value[i] + "]\n";
+                strOutput += "\tPhysical minimum [" + Signals.PhysicalMinimums.Value[i] + "]\n";
+                strOutput += "\tPhysical maximum [" + Signals.PhysicalMaximums.Value[i] + "]\n";
+                strOutput += "\tDigital minimum [" + Signals.DigitalMinimums.Value[i] + "]\n";
+                strOutput += "\tDigital maximum [" + Signals.DigitalMaximums.Value[i] + "]\n";
+                strOutput += "\tPrefiltering [" + Signals.Prefilterings.Value[i] + "]\n";
+                strOutput += "\tNumber of samples in data record [" + Signals.SampleCountPerRecords.Value[i] + "]\n";
+                strOutput += "\tSignals reserved [" + Signals.Reserveds.Value[i] + "]\n";
             }
 
 
