@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SharpLibEuropeanDataFormat</id>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <title>European Data Format Library (EDF)</title>
     <authors>Stéphane Lenclud</authors>
     <owners>Stéphane Lenclud</owners>
@@ -10,7 +10,9 @@
     <licenseUrl>https://github.com/Slion/SharpLibEuropeanDataFormat/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/Slion/SharpLibEuropeanDataFormat</projectUrl>
     <description>C# library providing easy access to European Data Format (EDF) content.</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>v0.0.3 Start time and record time as DateTime. Various refactoring.
+	Initial release.
+	</releaseNotes>
     <copyright>Stéphane Lenclud</copyright>
     <language></language>
     <tags>European Data Format EDF</tags>

@@ -43,6 +43,8 @@ namespace SharpLib.EuropeanDataFormat
             h.Signals.SampleCountPerRecords.Value = ReadMultipleInt(HeaderItems.NumberOfSamplesInDataRecord, ns);
             h.Signals.Reserveds.Value = ReadMultipleAscii(HeaderItems.SignalsReserved, ns);
 
+            h.ParseRecordingStartTime();
+
             return h;
         }
 
@@ -133,7 +135,7 @@ namespace SharpLib.EuropeanDataFormat
         private string ReadAscii(Field itemInfo)
         {
             byte[] bytes = this.ReadBytes(itemInfo.AsciiLength);
-            return AsciiString(bytes);
+            return AsciiString(bytes).Trim();
         }
 
         private string[] ReadMultipleAscii(Field itemInfo, int numberOfParts)
@@ -142,7 +144,7 @@ namespace SharpLib.EuropeanDataFormat
 
             for (int i = 0; i < numberOfParts; i++) {
                 byte[] bytes = this.ReadBytes(itemInfo.AsciiLength);
-                parts.Add(AsciiString(bytes));
+                parts.Add(AsciiString(bytes).Trim());
             }
             
             return parts.ToArray();

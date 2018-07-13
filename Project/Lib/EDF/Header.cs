@@ -124,6 +124,7 @@ namespace SharpLib.EuropeanDataFormat
                     temp = temp.Substring(0, AsciiLength);
                 ascii += temp;
             }
+
             return ascii;
         }
     }
@@ -166,6 +167,11 @@ namespace SharpLib.EuropeanDataFormat
 
     public class Header
     {
+        /// <summary>
+        /// The time at which the first record was obtained.
+        /// </summary>
+        DateTime FirstRecordTime;
+
         public FixedLengthString Version { get; private set; } = new FixedLengthString(HeaderItems.Version);
         public FixedLengthString PatientID { get; private set; } = new FixedLengthString(HeaderItems.PatientID);
         public FixedLengthString RecordID { get; private set; } = new FixedLengthString(HeaderItems.RecordID);
@@ -195,37 +201,61 @@ namespace SharpLib.EuropeanDataFormat
 
         public Header() { }
 
+        /// <summary>
+        /// Parse record start date and time string to obtain a DateTime object.
+        /// </summary>
+        public void ParseRecordingStartTime()
+        {
+            string timeString = RecordingStartDate.Value + " " + RecordingStartTime.Value.Replace('.', ':');
+            DateTime.TryParse(timeString, out FirstRecordTime);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aRecordIndex"></param>
+        /// <returns></returns>
+        public DateTime RecordTime(int aRecordIndex)
+        {
+            return FirstRecordTime.AddSeconds(aRecordIndex * RecordDurationInSeconds.Value);
+        }
+
+        /// <summary>
+        /// Useful for debug and inspection.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             string strOutput = "";
 
-            strOutput += "\n---------- EDF File Header ---------\n";
+            strOutput += "\n---------- Header ---------\n";            
             strOutput += "8b\tVersion [" + Version.Value + "]\n";
             strOutput += "80b\tPatient ID [" + PatientID.Value + "]\n";
             strOutput += "80b\tRecording ID [" + RecordID.Value + "]\n";
-            strOutput += "8b\tStart Date [" + RecordingStartDate.Value + "]\n";
-            strOutput += "8b\tStart Time [" + RecordingStartTime.Value + "]\n";
+            strOutput += "8b\tRecording start date [" + RecordingStartDate.Value + "]\n";
+            strOutput += "8b\tRecording start time [" + RecordingStartTime.Value + "]\n";
             strOutput += "8b\tHeader size (bytes) [" + SizeInBytes.Value + "]\n";
             strOutput += "44b\tReserved [" + Reserved.Value + "]\n";
             strOutput += "8b\tRecord count [" + RecordCount.Value + "]\n";
             strOutput += "8b\tRecord duration [" + RecordDurationInSeconds.Value + "]\n";
-            strOutput += "4b\tSignal count [" + SignalCount.Value + "]\n";
+            strOutput += "4b\tSignal count [" + SignalCount.Value + "]\n\n";
+            //strOutput += "First record time: " + FirstRecordTime + "\n\n";
 
+            // For each signal
             for (int i=0;i<SignalCount.Value;i++)
             {
-                strOutput += "---------Signal Header---------\n";
-                strOutput += "\tLabel [" + Signals.Labels.Value[i] + "]\n";
-                strOutput += "\tTransducer type [" + Signals.TransducerTypes.Value[i] + "]\n";
-                strOutput += "\tPhysical dimension [" + Signals.PhysicalDimensions.Value[i] + "]\n";
-                strOutput += "\tPhysical minimum [" + Signals.PhysicalMinimums.Value[i] + "]\n";
-                strOutput += "\tPhysical maximum [" + Signals.PhysicalMaximums.Value[i] + "]\n";
-                strOutput += "\tDigital minimum [" + Signals.DigitalMinimums.Value[i] + "]\n";
-                strOutput += "\tDigital maximum [" + Signals.DigitalMaximums.Value[i] + "]\n";
-                strOutput += "\tPrefiltering [" + Signals.Prefilterings.Value[i] + "]\n";
-                strOutput += "\tNumber of samples in data record [" + Signals.SampleCountPerRecords.Value[i] + "]\n";
-                strOutput += "\tSignals reserved [" + Signals.Reserveds.Value[i] + "]\n";
+                strOutput += "\tSignal " + i + ": "+ Signals.Labels.Value[i] + "\n\n";
+                //strOutput += "\tLabel [" + Signals.Labels.Value[i] + "]\n";
+                strOutput += "\t\tTransducer type [" + Signals.TransducerTypes.Value[i] + "]\n";
+                strOutput += "\t\tPhysical dimension [" + Signals.PhysicalDimensions.Value[i] + "]\n";
+                strOutput += "\t\tPhysical minimum [" + Signals.PhysicalMinimums.Value[i] + "]\n";
+                strOutput += "\t\tPhysical maximum [" + Signals.PhysicalMaximums.Value[i] + "]\n";
+                strOutput += "\t\tDigital minimum [" + Signals.DigitalMinimums.Value[i] + "]\n";
+                strOutput += "\t\tDigital maximum [" + Signals.DigitalMaximums.Value[i] + "]\n";
+                strOutput += "\t\tPrefiltering [" + Signals.Prefilterings.Value[i] + "]\n";
+                strOutput += "\t\tSample count per record [" + Signals.SampleCountPerRecords.Value[i] + "]\n";
+                strOutput += "\t\tSignals reserved [" + Signals.Reserveds.Value[i] + "]\n\n";
             }
-
 
             strOutput += "\n-----------------------------------\n";
 
