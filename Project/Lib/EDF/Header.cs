@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SharpLib.EuropeanDataFormat
 {
@@ -170,7 +171,7 @@ namespace SharpLib.EuropeanDataFormat
         /// <summary>
         /// The time at which the first record was obtained.
         /// </summary>
-        DateTime FirstRecordTime;
+        public DateTime FirstRecordTime;
 
         public FixedLengthString Version { get; private set; } = new FixedLengthString(HeaderItems.Version);
         public FixedLengthString PatientID { get; private set; } = new FixedLengthString(HeaderItems.PatientID);
@@ -207,7 +208,8 @@ namespace SharpLib.EuropeanDataFormat
         public void ParseRecordingStartTime()
         {
             string timeString = RecordingStartDate.Value + " " + RecordingStartTime.Value.Replace('.', ':');
-            DateTime.TryParse(timeString, out FirstRecordTime);
+            // As days comes before months use German culture explicitly
+            FirstRecordTime = DateTime.Parse(timeString, CultureInfo.GetCultureInfo("de-DE"));
         }
 
         /// <summary>
