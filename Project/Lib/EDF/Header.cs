@@ -213,7 +213,7 @@ namespace SharpLib.EuropeanDataFormat
         }
 
         /// <summary>
-        /// 
+        /// Provides the time corresponding to the given record index.
         /// </summary>
         /// <param name="aRecordIndex"></param>
         /// <returns></returns>
@@ -221,6 +221,25 @@ namespace SharpLib.EuropeanDataFormat
         {
             return FirstRecordTime.AddSeconds(aRecordIndex * RecordDurationInSeconds.Value);
         }
+
+        
+        /// <summary>
+        /// Provides the time corresponding to the given signal sample with millisecond precision.
+        /// </summary>
+        /// <param name="aSignal"></param>
+        /// <param name="aSampleIndex"></param>
+        /// <returns></returns>
+        public DateTime SampleTime(EuropeanDataFormat.Signal aSignal, int aSampleIndex)
+        {
+            int recordIndex = aSampleIndex / aSignal.SampleCountPerRecord.Value;
+            int modulo = aSampleIndex % aSignal.SampleCountPerRecord.Value;
+            DateTime recordTime = RecordTime(recordIndex);
+            // That will only give us milliseconds precision
+            DateTime sampleTime = recordTime.AddMilliseconds(RecordDurationInSeconds.Value * 1000 * modulo / aSignal.SampleCountPerRecord.Value);
+            return sampleTime;
+        }
+
+
 
         /// <summary>
         /// Useful for debug and inspection.
@@ -239,7 +258,7 @@ namespace SharpLib.EuropeanDataFormat
             strOutput += "8b\tHeader size (bytes) [" + SizeInBytes.Value + "]\n";
             strOutput += "44b\tReserved [" + Reserved.Value + "]\n";
             strOutput += "8b\tRecord count [" + RecordCount.Value + "]\n";
-            strOutput += "8b\tRecord duration [" + RecordDurationInSeconds.Value + "]\n";
+            strOutput += "8b\tRecord duration in seconds [" + RecordDurationInSeconds.Value + "]\n";
             strOutput += "4b\tSignal count [" + SignalCount.Value + "]\n\n";
             //strOutput += "First record time: " + FirstRecordTime + "\n\n";
 
