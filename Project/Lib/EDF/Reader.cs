@@ -48,32 +48,74 @@ namespace SharpLib.EuropeanDataFormat
             return h;
         }
 
-        public Signal[] ReadSignals()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aHeader"></param>
+        /// <returns></returns>
+        public Signal[] AllocateSignals(Header aHeader)
         {
-            Header header = ReadHeader();
-            Signal[] signals = new Signal[header.SignalCount.Value];
+            Signal[] signals = new Signal[aHeader.SignalCount.Value];
 
             for (int i = 0; i < signals.Length; i++)
             {
                 signals[i] = new Signal();
                 // Just copy data from the header, ugly architecture really...
-                signals[i].Label.Value = header.Signals.Labels.Value[i];
-                signals[i].TransducerType.Value = header.Signals.TransducerTypes.Value[i];
-                signals[i].PhysicalDimension.Value = header.Signals.PhysicalDimensions.Value[i];
-                signals[i].PhysicalMinimum.Value = header.Signals.PhysicalMinimums.Value[i];
-                signals[i].PhysicalMaximum.Value = header.Signals.PhysicalMaximums.Value[i];
-                signals[i].DigitalMinimum.Value = header.Signals.DigitalMinimums.Value[i];
-                signals[i].DigitalMaximum.Value = header.Signals.DigitalMaximums.Value[i];
-                signals[i].Prefiltering.Value = header.Signals.Prefilterings.Value[i];
-                signals[i].Reserved.Value = header.Signals.Reserveds.Value[i];
-                signals[i].SampleCountPerRecord.Value = header.Signals.SampleCountPerRecords.Value[i];
+                signals[i].Label.Value = aHeader.Signals.Labels.Value[i];
+                signals[i].TransducerType.Value = aHeader.Signals.TransducerTypes.Value[i];
+                signals[i].PhysicalDimension.Value = aHeader.Signals.PhysicalDimensions.Value[i];
+                signals[i].PhysicalMinimum.Value = aHeader.Signals.PhysicalMinimums.Value[i];
+                signals[i].PhysicalMaximum.Value = aHeader.Signals.PhysicalMaximums.Value[i];
+                signals[i].DigitalMinimum.Value = aHeader.Signals.DigitalMinimums.Value[i];
+                signals[i].DigitalMaximum.Value = aHeader.Signals.DigitalMaximums.Value[i];
+                signals[i].Prefiltering.Value = aHeader.Signals.Prefilterings.Value[i];
+                signals[i].Reserved.Value = aHeader.Signals.Reserveds.Value[i];
+                signals[i].SampleCountPerRecord.Value = aHeader.Signals.SampleCountPerRecords.Value[i];
             }
 
+            return signals;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aHeader"></param>
+        /// <param name="aSignal"></param>
+        public void ReadSignal(Header aHeader, Signal aSignal, int aSignalIndex)
+        {
+            // For each record
+            for (int j = 0; j < aHeader.RecordCount.Value; j++)
+            {
+                // For each signal
+                for (int i = 0; i < aHeader.SignalCount.Value; i++)
+                {
+                    // Read that signal samples
+                    if (i==aSignalIndex)
+                    {
+                        ReadNextSignalSamples(aSignal.Samples, aSignal.SampleCountPerRecord.Value);
+                    }
+                    else
+                    {
+                        // Just skip it
+                        SkipSignalSamples(aHeader.Signals.SampleCountPerRecords.Value[i]);
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Signal[] ReadSignals(Header aHeader)
+        {            
+            Signal[] signals = AllocateSignals(aHeader);
             //Read the signal sample values
             //int readPosition = header.NumberOfBytesInHeader.Value;
 
             // For each record
-            for (int j = 0; j < header.RecordCount.Value; j++)
+            for (int j = 0; j < aHeader.RecordCount.Value; j++)
             {
                 // For each signal
                 for (int i = 0; i < signals.Length; i++)
@@ -100,8 +142,17 @@ namespace SharpLib.EuropeanDataFormat
                 short intVal = BitConverter.ToInt16(intBytes, 0);
                 aSamples.Add(intVal);
             }
-
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSampleCount"></param>
+        private void SkipSignalSamples(int aSampleCount)
+        {
+            BaseStream.Seek(aSampleCount * sizeof(short),SeekOrigin.Current);
+        }
+
 
 
 

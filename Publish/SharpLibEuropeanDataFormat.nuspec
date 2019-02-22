@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SharpLibEuropeanDataFormat</id>
-    <version>0.0.6</version>
+    <version>0.1.0</version>
     <title>European Data Format Library (EDF)</title>
     <authors>Stéphane Lenclud</authors>
     <owners>Stéphane Lenclud</owners>
@@ -10,7 +10,8 @@
     <licenseUrl>https://github.com/Slion/SharpLibEuropeanDataFormat/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/Slion/SharpLibEuropeanDataFormat</projectUrl>
     <description>C# library providing easy access to European Data Format (EDF) content.</description>
-    <releaseNotes>v0.0.6 Adding function to compute signal sample time. 
+    <releaseNotes>v0.1.0 Adding the ability to read a single signal. 
+v0.0.6 Adding function to compute signal sample time. 
 v0.0.5 Fixing date parsing issue on machine with en-US format. 
 v0.0.3 Start time and record time as DateTime. Various refactoring.
 Initial release.

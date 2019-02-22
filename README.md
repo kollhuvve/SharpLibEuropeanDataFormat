@@ -1,89 +1,22 @@
-![Build Status](https://slions.visualstudio.com/_apis/public/build/definitions/ad16bbd0-a884-4787-8e3a-85daf30cca16/10/badge)
+[![NuGet Badge](https://buildstats.info/nuget/SharpLibEuropeanDataFormat)](https://www.nuget.org/packages/SharpLibHid/)
+<img align="right" src="https://slions.visualstudio.com/_apis/public/build/definitions/ad16bbd0-a884-4787-8e3a-85daf30cca16/10/badge" />
 
-![EDF file icon](Doc/edflib_icon.png?raw=true "EDF file icon")
+![EDF file icon](Doc/edf_icon.png?raw=true "EDF file icon")
 
-## Summary
+# Summary
 
 SharpLibEuropeanDataFormat allows you to read EDF files typically used in medical applications.
 See [EDF specification](http://www.edfplus.info/specs/edf.html).
 Support for writing was left in place but is untested and most certainly broken.
 
-It was forked from LibEDF but has since been fixed and refactored.
-LibEDF for some reason was only reading a single record which was rather useless for most applications.
-The documentation below is outdated and contains information about the upstrean fork.
-
 This project is provided under the terms of the [MIT license](http://choosealicense.com/licenses/mit/).
 
-## C# Usage
+# Binary Distribution
+The easiest way to make use of this library in your own project is to add a reference to the following [NuGet package](https://www.nuget.org/packages/SharpLibEuropeanDataFormat/).
 
-The project LibEDF_CSharp builds to create a COM visible DLL.
-To use the library in a C# project reference the LibEDF_CSharp project or DLL and use the namespace LibEDF_CSharp as shown in the example code below.
+# European Data Format
 
-```cs
-using LibEDF_DotNet;
-...
-
-//Crreate an empty EDF file
-var edfFile = new EDFFile();
-
-//Create a signal object
-var ecgSig = new EDFSignal();
-ecgSig.Label.Value              = "ECG";
-ecgSig.NumberOfSamples.Value    = 10;
-ecgSig.PhysicalDimension.Value  = "mV";
-ecgSig.DigitalMinimum.Value     = -2048;
-ecgSig.DigitalMaximum.Value     = 2047;
-ecgSig.PhysicalMinimum.Value    = -10.2325;
-ecgSig.PhysicalMaximum.Value    = 10.2325;
-ecgSig.TransducerType.Value     = "UNKNOWN";
-ecgSig.Prefiltering.Value       = "UNKNOWN";
-ecgSig.Reserved.Value           = "RESERVED";
-ecgSig.Samples = new short[] { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
-
-//Set the signal
-edfFile.Signals = new EDFSignal[1] { ecgSig };
-
-//Create the header object
-var h = new EDFHeader();
-h.DurationOfDataRecord.Value    = 1;
-h.Version.Value                 = "0";
-h.PatientID.Value               = "TEST PATIENT ID";
-h.RecordID.Value                = "TEST RECORD ID";
-h.StartDate.Value               = "11.11.16"; //dd.mm.yy
-h.StartTime.Value               = "12.12.12"; //hh.mm.ss
-h.Reserved.Value                = "RESERVED";
-h.NumberOfDataRecords.Value     = 1;
-h.NumberOfSignals.Value         = (short)edfFile.Signals.Length;
-h.SignalsReserved.Value         = Enumerable.Repeat("RESERVED".PadRight(32, ' '),
-                                    h.NumberOfSignals.Value).ToArray();
-
-//Set the header
-edfFile.Header = h;
-
-//Print some info
-Console.Write(
-    "\nPatient ID:\t\t"      + edfFile.Header.PatientID.Value +
-    "\nNumber of signals:\t" + edfFile.Header.NumberOfSignals.Value +
-    "\nStart date:\t\t"      + edfFile.Header.StartDate.Value +
-    "\nSignal label:\t\t"    + edfFile.Signals[0].Label.Value +
-    "\nSignal samples:\t\t" + String.Join(",", edfFile.Signals[0].Samples.Skip(0).Take(10).ToArray())
- );
-
-//Save the file
-string fileName = @"C:\temp\example.edf";
-edfFile.Save(fileName);
-
-//Read the file
-var f = new EDFFile(fileName);
-```
-
-![Console example screenshot](Doc/edf_example_console.png?raw=true)
-
-## Win32 usage
-The project LibEDF_Win32Dll builds to create an unmanaged .dll and associated .lib file.
-Include those files and the header file libedf.h to call functions from an unmanaged Win32 project."
-
-### Header Record
+## Header
 
 | # Chars | File description                               |
 |---------|------------------------------------------------|
@@ -108,7 +41,7 @@ Include those files and the header file libedf.h to call functions from an unman
 |ns * 8 ascii  | ns * nr of samples in each data record |
 |ns * 32 ascii | ns * reserved|
 
-### Data Record
+## Data Record
 
 | # Chars                   | File description                |
 |---------------------------|---------------------------------|

@@ -17,7 +17,7 @@ namespace EuropeanDataFormatDemo
 
             // Read and dump some data
 
-            if (args.Count()!=1)
+            if (args.Count() == 0)
             {
                 Console.WriteLine("Error: Expecting path to folder as argument!");
                 // Exit code?
@@ -32,8 +32,25 @@ namespace EuropeanDataFormatDemo
                 Console.WriteLine("======== EDF: " + fileInfo.Name + "========");
 
                 DateTime mark = DateTime.Now;
-                //Read the file
-                EDF.File edf = new EDF.File(fileInfo.FullName);
+                //
+
+                EDF.File edf = null;
+                int signalIndex = -1;
+
+                if (args.Count()==1)
+                {
+                    // No signal index specified, read the whole file
+                    edf = new EDF.File(fileInfo.FullName);
+                }
+                else
+                {
+                    // Signal index specified, just read that one signal 
+                    edf = new EDF.File();
+                    edf.Open(fileInfo.FullName);
+                    signalIndex = int.Parse(args[1]);
+                    edf.ReadSignal(signalIndex);
+                }
+                
 
                 // Print loading time
                 TimeSpan runTime = DateTime.Now - mark;
@@ -43,10 +60,20 @@ namespace EuropeanDataFormatDemo
                 Console.WriteLine(edf.Header.ToString());
 
                 // Print signals intro
-                foreach (EDF.Signal s in edf.Signals)
+                if (signalIndex<0)
                 {
-                    Console.WriteLine(s.ToString());
+                    // Print all signal
+                    foreach (EDF.Signal s in edf.Signals)
+                    {
+                        Console.WriteLine(s.ToString());
+                    }      
                 }
+                else
+                {
+                    // Print the signal we loaded
+                    Console.WriteLine(edf.Signals[signalIndex].ToString());
+                }
+
 
                 Console.WriteLine("=========================================\n");
 

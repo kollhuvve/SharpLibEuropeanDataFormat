@@ -1,43 +1,95 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace SharpLib.EuropeanDataFormat
 {
-    public class File
+    public class File : IDisposable
     {
         public Header Header { get; set; }
         public Signal[] Signals { get; set; }
 
+        private Reader iReader;
+
         public File() { }
-        public File(string edfFilePath) {
-            Open(edfFilePath);
+        public File(string edfFilePath)
+        {
+            ReadAll(edfFilePath);
         }
 
-        public File(byte[] edfBytes){
-            Open(edfBytes);
+        public File(byte[] edfBytes)
+        {
+            ReadAll(edfBytes);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            if (iReader!=null)
+            {
+                iReader.Dispose();
+                iReader = null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="edfBase64"></param>
         public void ReadBase64(string edfBase64)
         {
             byte[] edfBytes = System.Convert.FromBase64String(edfBase64);
-            Open(edfBytes);
+            ReadAll(edfBytes);
         }
 
+        /// <summary>
+        /// Open the given EDF file and read its header.
+        /// </summary>
+        /// <param name="edfFilePath"></param>
         public void Open(string edfFilePath)
+        {
+            // Open file
+            iReader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read));
+            // Read headers
+            Header = iReader.ReadHeader();
+            // Allocate signals
+            Signals = iReader.AllocateSignals(Header);
+        }
+
+        /// <summary>
+        /// Read a signal signal.
+        /// </summary>
+        /// <param name="aIndex"></param>
+        public void ReadSignal(int aIndex)
+        {
+            iReader.ReadSignal(Header, Signals[aIndex], aIndex);
+        }
+
+        /// <summary>
+        /// Read the whole file into memory
+        /// </summary>
+        /// <param name="edfFilePath"></param>
+        public void ReadAll(string edfFilePath)
         {
             using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read)))
             {
                 Header = reader.ReadHeader();
-                Signals = reader.ReadSignals();
+                Signals = reader.ReadSignals(Header);
             }
         }
 
-        public void Open(byte[] edfBytes)
+        /// <summary>
+        /// Read a whole EDF file from a memory buffer. 
+        /// </summary>
+        /// <param name="edfBytes"></param>
+        public void ReadAll(byte[] edfBytes)
         {
             using (var r = new Reader(edfBytes))
             {
                 Header = r.ReadHeader();
-                Signals = r.ReadSignals();
+                Signals = r.ReadSignals(Header);
             }
         }
 
