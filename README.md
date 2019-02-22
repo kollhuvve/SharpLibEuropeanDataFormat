@@ -1,4 +1,4 @@
-[![NuGet Badge](https://buildstats.info/nuget/SharpLibEuropeanDataFormat)](https://www.nuget.org/packages/SharpLibHid/)
+[![NuGet Badge](https://buildstats.info/nuget/SharpLibEuropeanDataFormat)](https://www.nuget.org/packages/SharpLibEuropeanDataFormat/)
 <img align="right" src="https://slions.visualstudio.com/_apis/public/build/definitions/ad16bbd0-a884-4787-8e3a-85daf30cca16/10/badge" />
 
 ![EDF file icon](Doc/edf_icon.png?raw=true "EDF file icon")
