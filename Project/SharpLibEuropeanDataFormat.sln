@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Dll", "LibEDF_Win32Dll\LibEDF_Win32.vcxproj", "{A668263C-D2F8-4038-B96D-F00AAF44CF90}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Example", "LibEDF_Win32Example\LibEDF_Win32Example.vcxproj", "{F8085787-2F85-4BF2-A617-6D7D99DD8415}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpLibEuropeanDataFormat", "Lib\SharpLibEuropeanDataFormat.csproj", "{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuropeanDataFormatDemo", "Demo\EuropeanDataFormatDemo.csproj", "{73ACE459-8CE0-4D90-95EE-A9B3543E183F}"
@@ -23,26 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Debug|x64.ActiveCfg = Debug|x64
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Debug|x64.Build.0 = Debug|x64
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Debug|x86.ActiveCfg = Debug|Win32
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Debug|x86.Build.0 = Debug|Win32
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Release|Any CPU.ActiveCfg = Release|Win32
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Release|x64.ActiveCfg = Release|x64
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Release|x64.Build.0 = Release|x64
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Release|x86.ActiveCfg = Release|Win32
-		{A668263C-D2F8-4038-B96D-F00AAF44CF90}.Release|x86.Build.0 = Release|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Debug|x64.ActiveCfg = Debug|x64
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Debug|x64.Build.0 = Debug|x64
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Debug|x86.ActiveCfg = Debug|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Debug|x86.Build.0 = Debug|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Release|Any CPU.ActiveCfg = Release|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Release|x64.ActiveCfg = Release|x64
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Release|x64.Build.0 = Release|x64
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Release|x86.ActiveCfg = Release|Win32
-		{F8085787-2F85-4BF2-A617-6D7D99DD8415}.Release|x86.Build.0 = Release|Win32
 		{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}.Debug|x64.ActiveCfg = Debug|Any CPU

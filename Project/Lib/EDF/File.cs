@@ -3,21 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace SharpLib.EuropeanDataFormat
 {
-    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-       Guid("29757a02-8a0c-47e2-96bb-2266c993c97a")]
-    public interface IEDFFile
+    public class File
     {
-        //Expose methods for COM use
-        void Open(string edfFilePath);
-        void Open(byte[] edfBytes);
-        void Save(string edfFilePath);
-    }
-
-    [ClassInterface(ClassInterfaceType.None),
-        Guid("07504667-1e49-4535-9c2f-157ee5b280b0")]
-    public class File : IEDFFile
-    {
-        public Header Header { get; set; } = new Header();
+        public Header Header { get; set; }
         public Signal[] Signals { get; set; }
 
         public File() { }
@@ -37,7 +25,7 @@ namespace SharpLib.EuropeanDataFormat
 
         public void Open(string edfFilePath)
         {
-            using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open)))
+            using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read)))
             {
                 Header = reader.ReadHeader();
                 Signals = reader.ReadSignals();

@@ -30,10 +30,19 @@ namespace EuropeanDataFormatDemo
             foreach (FileInfo fileInfo in d.GetFiles("*.edf"))
             {
                 Console.WriteLine("======== EDF: " + fileInfo.Name + "========");
+
+                DateTime mark = DateTime.Now;
                 //Read the file
                 EDF.File edf = new EDF.File(fileInfo.FullName);
+
+                // Print loading time
+                TimeSpan runTime = DateTime.Now - mark;
+                Console.WriteLine("Load time: " + runTime.TotalSeconds.ToString("0.00") + " s");
+
+                // Print headers
                 Console.WriteLine(edf.Header.ToString());
 
+                // Print signals intro
                 foreach (EDF.Signal s in edf.Signals)
                 {
                     Console.WriteLine(s.ToString());
