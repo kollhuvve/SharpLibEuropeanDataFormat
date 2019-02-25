@@ -44,11 +44,21 @@ namespace EuropeanDataFormatDemo
                 }
                 else
                 {
-                    // Signal index specified, just read that one signal 
-                    edf = new EDF.File();
-                    edf.Open(fileInfo.FullName);
-                    signalIndex = int.Parse(args[1]);
-                    edf.ReadSignal(signalIndex);
+                    // Signal specified, just read that one signal 
+                    using (edf = new EDF.File())
+                    {
+                        edf.Open(fileInfo.FullName);
+                        // Read specified signals
+                        for (int i=1; i<args.Count(); i++)
+                        {
+                            Console.WriteLine("Reading signal: " + args[i]);
+                            bool success = edf.ReadSignal(args[i]);
+                            if (!success)
+                            {
+                                Console.WriteLine("ERROR: Signal " + args[i] + " not found");
+                            }
+                        }
+                    }
                 }
                 
 

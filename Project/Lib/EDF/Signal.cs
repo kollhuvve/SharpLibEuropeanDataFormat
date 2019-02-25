@@ -5,6 +5,12 @@ namespace SharpLib.EuropeanDataFormat
 {
     public class Signal
     {
+        /// <summary>
+        /// Index of that signal in the EDF file it belongs to.
+        /// </summary>
+        public int Index { get; set; }
+
+
         public FixedLengthString Label              { get; } = new FixedLengthString(HeaderItems.Label);
         public FixedLengthString TransducerType     { get; } = new FixedLengthString(HeaderItems.TransducerType);
         public FixedLengthString PhysicalDimension  { get; } = new FixedLengthString(HeaderItems.PhysicalDimension);

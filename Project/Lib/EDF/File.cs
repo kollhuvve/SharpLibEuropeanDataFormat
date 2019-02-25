@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SharpLib.EuropeanDataFormat
@@ -45,7 +46,7 @@ namespace SharpLib.EuropeanDataFormat
         }
 
         /// <summary>
-        /// Open the given EDF file and read its header.
+        /// Open the given EDF file, read its header and allocate corresponding Signal objects.
         /// </summary>
         /// <param name="edfFilePath"></param>
         public void Open(string edfFilePath)
@@ -59,13 +60,32 @@ namespace SharpLib.EuropeanDataFormat
         }
 
         /// <summary>
-        /// Read a signal signal.
+        /// Read the signal at the given index.
         /// </summary>
         /// <param name="aIndex"></param>
         public void ReadSignal(int aIndex)
         {
-            iReader.ReadSignal(Header, Signals[aIndex], aIndex);
+            iReader.ReadSignal(Header, Signals[aIndex]);
         }
+
+        /// <summary>
+        /// Read the signal matching the given name.
+        /// </summary>
+        /// <param name="aContains"></param>
+        /// <returns></returns>
+        public bool ReadSignal(string aMatch)
+        {
+            var signal = Signals.FirstOrDefault(s => s.Label.Value.Equals(aMatch));
+            if (signal == null)
+            {
+                return false;
+            }
+            
+            iReader.ReadSignal(Header, signal);
+            return true;
+        }
+
+
 
         /// <summary>
         /// Read the whole file into memory

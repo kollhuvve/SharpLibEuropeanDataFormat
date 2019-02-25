@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -61,6 +62,7 @@ namespace SharpLib.EuropeanDataFormat
             {
                 signals[i] = new Signal();
                 // Just copy data from the header, ugly architecture really...
+                signals[i].Index = i;
                 signals[i].Label.Value = aHeader.Signals.Labels.Value[i];
                 signals[i].TransducerType.Value = aHeader.Signals.TransducerTypes.Value[i];
                 signals[i].PhysicalDimension.Value = aHeader.Signals.PhysicalDimensions.Value[i];
@@ -77,12 +79,19 @@ namespace SharpLib.EuropeanDataFormat
         }
 
         /// <summary>
-        /// 
+        /// Read the requested signal for our file
         /// </summary>
         /// <param name="aHeader"></param>
         /// <param name="aSignal"></param>
-        public void ReadSignal(Header aHeader, Signal aSignal, int aSignalIndex)
+        public void ReadSignal(Header aHeader, Signal aSignal)
         {
+            // Make sure we start just after our header
+            this.BaseStream.Seek(aHeader.SizeInBytes.Value, SeekOrigin.Begin);
+
+            aSignal.Samples.Clear();
+            // Compute capacity thus pre-allocating memory to avoid resizing
+            aSignal.Samples.Capacity = aHeader.RecordCount.Value * aSignal.SampleCountPerRecord.Value;
+            int capacity = aSignal.Samples.Capacity;
             // For each record
             for (int j = 0; j < aHeader.RecordCount.Value; j++)
             {
@@ -90,7 +99,7 @@ namespace SharpLib.EuropeanDataFormat
                 for (int i = 0; i < aHeader.SignalCount.Value; i++)
                 {
                     // Read that signal samples
-                    if (i==aSignalIndex)
+                    if (i==aSignal.Index)
                     {
                         ReadNextSignalSamples(aSignal.Samples, aSignal.SampleCountPerRecord.Value);
                     }
@@ -102,18 +111,21 @@ namespace SharpLib.EuropeanDataFormat
                 }
             }
 
+            if (capacity != aSignal.Samples.Capacity)
+            {
+                // We should never get there
+                Debug.WriteLine("ERROR: signal array was resized");
+            }
+
         }
 
         /// <summary>
-        /// 
+        /// Read all signal sample value from our file.
         /// </summary>
         /// <returns></returns>
         public Signal[] ReadSignals(Header aHeader)
         {            
             Signal[] signals = AllocateSignals(aHeader);
-            //Read the signal sample values
-            //int readPosition = header.NumberOfBytesInHeader.Value;
-
             // For each record
             for (int j = 0; j < aHeader.RecordCount.Value; j++)
             {
@@ -135,11 +147,13 @@ namespace SharpLib.EuropeanDataFormat
         /// <param name="aSampleCount"></param>
         private void ReadNextSignalSamples(ICollection<short> aSamples, int aSampleCount)
         {
+            // Single file read operation per record
+            byte[] intBytes = this.ReadBytes(sizeof(short) * aSampleCount);
             for (int i=0;i<aSampleCount;i++)
             {
-                //TODO: simplify that?
-                byte[] intBytes = this.ReadBytes(sizeof(short));
-                short intVal = BitConverter.ToInt16(intBytes, 0);
+                // Fetch our sample short from our record buffer
+                short intVal = BitConverter.ToInt16(intBytes, i* sizeof(short));
+                // TODO: use a static array for better performance? I guess it's not needed since we prealloc using Capacity.
                 aSamples.Add(intVal);
             }
         }
@@ -150,12 +164,17 @@ namespace SharpLib.EuropeanDataFormat
         /// <param name="aSampleCount"></param>
         private void SkipSignalSamples(int aSampleCount)
         {
-            BaseStream.Seek(aSampleCount * sizeof(short),SeekOrigin.Current);
+            BaseStream.Seek(aSampleCount * sizeof(short), SeekOrigin.Current);
         }
 
 
 
-
+        /// <summary>
+        /// TODO: Is this still being used?
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="numberOfSamples"></param>
+        /// <returns></returns>
         private short[] ReadSignalSamples(int startPosition, int numberOfSamples)
         {
             var samples = new List<short>();
