@@ -52,8 +52,8 @@ namespace EuropeanDataFormatDemo
                         for (int i=1; i<args.Count(); i++)
                         {
                             Console.WriteLine("Reading signal: " + args[i]);
-                            bool success = edf.ReadSignal(args[i]);
-                            if (!success)
+                            EDF.Signal signal = edf.ReadSignal(args[i]);
+                            if (signal==null)
                             {
                                 Console.WriteLine("ERROR: Signal " + args[i] + " not found");
                             }

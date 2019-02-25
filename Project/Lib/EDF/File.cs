@@ -73,16 +73,16 @@ namespace SharpLib.EuropeanDataFormat
         /// </summary>
         /// <param name="aContains"></param>
         /// <returns></returns>
-        public bool ReadSignal(string aMatch)
+        public Signal ReadSignal(string aMatch)
         {
             var signal = Signals.FirstOrDefault(s => s.Label.Value.Equals(aMatch));
             if (signal == null)
             {
-                return false;
+                return null;
             }
             
             iReader.ReadSignal(Header, signal);
-            return true;
+            return signal;
         }
 
 
