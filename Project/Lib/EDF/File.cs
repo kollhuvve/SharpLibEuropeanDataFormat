@@ -52,7 +52,7 @@ namespace SharpLib.EuropeanDataFormat
         public void Open(string edfFilePath)
         {
             // Open file
-            iReader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read));
+            iReader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read, FileShare.Read));
             // Read headers
             Header = iReader.ReadHeader();
             // Allocate signals
@@ -93,7 +93,7 @@ namespace SharpLib.EuropeanDataFormat
         /// <param name="edfFilePath"></param>
         public void ReadAll(string edfFilePath)
         {
-            using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read)))
+            using (var reader = new Reader(System.IO.File.Open(edfFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
                 Header = reader.ReadHeader();
                 Signals = reader.ReadSignals(Header);
