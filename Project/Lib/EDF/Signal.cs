@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpLib.EuropeanDataFormat
+namespace SharpLib.EuropeanDataFormat.EDF
 {
     public class Signal
     {

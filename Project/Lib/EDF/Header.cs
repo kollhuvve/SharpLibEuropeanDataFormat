@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace SharpLib.EuropeanDataFormat
+namespace SharpLib.EuropeanDataFormat.EDF
 {
     public class Field
     {
@@ -215,27 +215,27 @@ namespace SharpLib.EuropeanDataFormat
         /// <summary>
         /// Provides the time corresponding to the given record index.
         /// </summary>
-        /// <param name="aRecordIndex"></param>
+        /// <param name="recordIndex"></param>
         /// <returns></returns>
-        public DateTime RecordTime(int aRecordIndex)
+        public DateTime RecordTime(int recordIndex)
         {
-            return FirstRecordTime.AddSeconds(aRecordIndex * RecordDurationInSeconds.Value);
+            return FirstRecordTime.AddSeconds(recordIndex * RecordDurationInSeconds.Value);
         }
 
         
         /// <summary>
         /// Provides the time corresponding to the given signal sample with millisecond precision.
         /// </summary>
-        /// <param name="aSignal"></param>
-        /// <param name="aSampleIndex"></param>
+        /// <param name="signal"></param>
+        /// <param name="sampleIndex"></param>
         /// <returns></returns>
-        public DateTime SampleTime(EuropeanDataFormat.Signal aSignal, int aSampleIndex)
+        public DateTime SampleTime(EDF.Signal signal, int sampleIndex)
         {
-            int recordIndex = aSampleIndex / aSignal.SampleCountPerRecord.Value;
-            int modulo = aSampleIndex % aSignal.SampleCountPerRecord.Value;
-            DateTime recordTime = RecordTime(recordIndex);
+            var recordIndex = sampleIndex / signal.SampleCountPerRecord.Value;
+            var modulo = sampleIndex % signal.SampleCountPerRecord.Value;
+            var recordTime = RecordTime(recordIndex);
             // That will only give us milliseconds precision
-            DateTime sampleTime = recordTime.AddMilliseconds(RecordDurationInSeconds.Value * 1000 * modulo / aSignal.SampleCountPerRecord.Value);
+            var sampleTime = recordTime.AddMilliseconds(RecordDurationInSeconds.Value * 1000 * modulo / signal.SampleCountPerRecord.Value);
             return sampleTime;
         }
 

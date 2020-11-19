@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using SharpLib.EuropeanDataFormat.EDF;
 
-namespace SharpLib.EuropeanDataFormat
+namespace SharpLib.EuropeanDataFormat.EDF
 {
     class Writer : BinaryWriter
     {
         public Writer(FileStream fs) : base(fs) { }
 
-        public void WriteEDF(File edf, string edfFilePath)
+        public void WriteEDF(EDFFile edf, string edfFilePath)
         {
             edf.Header.SizeInBytes.Value = CalcNumOfBytesInHeader(edf);
 
@@ -47,7 +48,7 @@ namespace SharpLib.EuropeanDataFormat
             Console.WriteLine("File size: " + System.IO.File.ReadAllBytes(edfFilePath).Length);
         }
 
-        private int CalcNumOfBytesInHeader(File edf)
+        private int CalcNumOfBytesInHeader(EDFFile edf)
         {
             int totalFixedLength = 256;
             int ns = edf.Signals.Length;

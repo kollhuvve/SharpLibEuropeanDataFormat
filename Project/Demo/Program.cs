@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using EDF = SharpLib.EuropeanDataFormat;
 using System.IO;
 using System.Collections.Generic;
+using SharpLib.EuropeanDataFormat.EDF;
 
-namespace EuropeanDataFormatDemo
+namespace SharpLib.EuropeanDataFormat
 {
     class Program
     {
@@ -34,18 +34,18 @@ namespace EuropeanDataFormatDemo
                 DateTime mark = DateTime.Now;
                 //
 
-                EDF.File edf = null;
+                EDFFile edf = null;
                 int signalIndex = -1;
 
                 if (args.Count()==1)
                 {
                     // No signal index specified, read the whole file
-                    edf = new EDF.File(fileInfo.FullName);
+                    edf = new EDFFile(fileInfo.FullName);
                 }
                 else
                 {
                     // Signal specified, just read that one signal 
-                    using (edf = new EDF.File())
+                    using (edf = new EDFFile())
                     {
                         edf.Open(fileInfo.FullName);
                         // Read specified signals
@@ -104,7 +104,7 @@ namespace EuropeanDataFormatDemo
         {
 
             //Crreate an empty EDF file
-            var edfFile = new EDF.File();
+            var edfFile = new EDFFile();
 
             //Create a signal object
             var ecgSig = new EDF.Signal();
@@ -156,7 +156,7 @@ namespace EuropeanDataFormatDemo
             edfFile.Save(fileName);
 
             //Read the file
-            var f = new EDF.File(fileName);
+            var f = new EDFFile(fileName);
 
             Console.ReadLine();
         }
@@ -164,7 +164,7 @@ namespace EuropeanDataFormatDemo
         private static void Example2_Read_EDF_From_Base64(string edfBase64FilePath)
         {
             var edfBase64 = File.ReadAllText(edfBase64FilePath);
-            var edfFile = new EDF.File();
+            var edfFile = new EDFFile();
             edfFile.ReadBase64(edfBase64);
             edfFile.Save(@"C:\temp\edf_bytes.edf");
         }

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SharpLib.EuropeanDataFormat</RootNamespace>
     <AssemblyName>SharpLibEuropeanDataFormat</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -60,7 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EDF\File.cs" />
+    <Compile Include="EDF\EDFFile.cs" />
+    <Compile Include="EDF\Extensions.cs" />
     <Compile Include="EDF\Header.cs" />
     <Compile Include="EDF\Reader.cs" />
     <Compile Include="EDF\Signal.cs" />

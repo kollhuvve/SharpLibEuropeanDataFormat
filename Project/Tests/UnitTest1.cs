@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SharpLib.EuropeanDataFormat;
 using System.Linq;
 using System.Collections.Generic;
+using SharpLib.EuropeanDataFormat.EDF;
 
-namespace EDFSharpTests
+namespace SharpLib.EuropeanDataFormat
 {
     [TestClass]
     public class UnitTest1
@@ -12,7 +12,7 @@ namespace EDFSharpTests
         public void Test_WriteReadEDF_ShouldReturnSameData()
         {
             //Write an EDF file with two signals then read it and check the data is correct
-            var edf1 = new File();
+            var edf1 = new EDFFile();
 
             var ecgSig = new Signal();
             ecgSig.Label.Value = "ECG";
@@ -61,7 +61,7 @@ namespace EDFSharpTests
             edf1.Save(edfFilePath);
 
             //Read the file back
-            var edf2 = new File(edfFilePath);
+            var edf2 = new EDFFile(edfFilePath);
 
             Assert.AreEqual(edf2.Header.Version.ToAscii(),              edf1.Header.Version.ToAscii());
             Assert.AreEqual(edf2.Header.PatientID.ToAscii(),            edf1.Header.PatientID.ToAscii());
